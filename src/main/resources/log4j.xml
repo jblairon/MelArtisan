@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- Application Loggers -->
+	<logger name="fr.artisan.plateformeArtisan">
+		<level value="info" />
+	</logger>
+	
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.orm">
+		<level value="info" />
+	</logger>
+	
+	<!-- Log all SQL DML statements as they are executed -->
+	<logger name="org.hibernate.SQL">
+		<level value="info" />
+	</logger>
+
+	<!-- Log all JDBC parameters -->
+	<logger name="org.hibernate.type">
+		<level value="info" />
+	</logger>
+	<!-- Log all SQL DDL statements as they are executed -->
+	<logger name="org.hibernate.tool.hbm2ddl">
+		<level value="info" />
+	</logger>
+	<!-- Log the state of all entities (max 20 entities) associated with the 
+		session at flush time -->
+	<logger name="org.hibernate.pretty">
+		<level value="info" />
+	</logger>
+	<!-- Log all second-level cache activity -->
+	<logger name="org.hibernate.cache">
+		<level value="info" />
+	</logger>
+	<!-- Log transaction related activity -->
+	<logger name="org.hibernate.transaction">
+		<level value="info" />
+	</logger>
+	<!-- Log all JDBC resource acquisition -->
+	<logger name="org.hibernate.jdbc">
+		<level value="info" />
+	</logger>
+	<!-- Log HQL and SQL ASTs during query parsing -->
+	<logger name="org.hibernate.hql.ast.AST">
+		<level value="info" />
+	</logger>
+	<!-- Log all JAAS authorization requests -->
+	<logger name="org.hibernate.secure">
+		<level value="info" />
+	</logger>
+	<!-- Log everything (a lot of debugrmation, but very useful for troubleshooting) -->
+	<logger name="org.hibernate">
+		<level value="info" />
+	</logger>
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="warn" />
+		<appender-ref ref="console" />
+	</root>
+	
+</log4j:configuration>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/views">
+	<decorator name="front" page="template-front.jsp">
+		<pattern>/*</pattern>
+		<pattern>/home.jsp</pattern>
+		<pattern>/signup.jsp</pattern>
+		<pattern>/login.jsp</pattern>
+		<pattern>/detailsSociete.jsp</pattern>
+		<pattern>/listeParCategorie.jsp</pattern>
+		<pattern>/societes.jsp</pattern>
+	</decorator>
+
+	<decorator name="admin" page="admin/template-admin.jsp">
+		<pattern>/admin/*</pattern>
+	</decorator>
+
+	<decorator name="client" page="client/template-client.jsp">
+		<pattern>/client/*</pattern>
+	</decorator>
+	
+	<decorator name="artisan" page="artisan/template-artisan.jsp">
+		<pattern>/artisan/*</pattern>
+	</decorator>
+	
+<!-- 	<decorator name="accueil" page="template-accueil.jsp"> -->
+<!-- 		<pattern>/*</pattern> -->
+<!-- 	</decorator> -->
+	
+</decorators>

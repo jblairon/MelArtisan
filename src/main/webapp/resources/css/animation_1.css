@@ -1,0 +1,140 @@
+@charset "UTF-8";
+
+.animation-1 {
+-webkit-animation: cssAnimation1 1s 1 ease;
+-moz-animation: cssAnimation1 1s 1 ease;
+-o-animation: cssAnimation1 1s 1 ease;
+}
+@-webkit-keyframes cssAnimation1 {
+from { -webkit-transform: rotate(0deg) scale(0.926) skew(1deg) translate(0px); }
+to { -webkit-transform: rotate(0deg) scale(0.273) skew(1deg) translate(0px); }
+}
+@-o-keyframes cssAnimation1 {
+from { -o-transform: rotate(0deg) scale(0.926) skew(1deg) translate(0px); }
+to { -o-transform: rotate(0deg) scale(0.273) skew(1deg) translate(0px); }
+}
+
+@-moz-keyframes cssAnimation1 {
+from { -moz-transform: rotate(0deg) scale(0.926) skew(1deg) translate(0px); }
+to { -moz-transform: rotate(0deg) scale(0.273) skew(1deg) translate(0px); }
+}
+
+
+
+
+.animation-2 {
+-webkit-animation: cssAnimation2 1s 2 ease-in-out;
+-moz-animation: cssAnimation2 1s 2 ease-in-out;
+-o-animation: cssAnimation2 1s 2 ease-in-out;
+}
+
+@-webkit-keyframes cssAnimation2 {
+from { -webkit-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -webkit-transform: rotate(360deg) scale(1) skew(1deg) translate(0px); }
+}
+@-moz-keyframes cssAnimation2 {
+from { -moz-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -moz-transform: rotate(360deg) scale(1) skew(1deg) translate(0px); }
+}
+@-o-keyframes cssAnimation2 {
+from { -o-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -o-transform: rotate(360deg) scale(1) skew(1deg) translate(0px); }
+}
+
+
+.animation-3 {
+-webkit-animation: cssAnimation3 1s 1 ease-in-out;
+-moz-animation: cssAnimation3 1s 1 ease-in-out;
+-o-animation: cssAnimation3 1s 1 ease-in-out;
+}
+@-webkit-keyframes cssAnimation3 {
+from { -webkit-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -webkit-transform: rotate(360deg) scale(0.339) skew(1deg) translate(-300px); }
+}
+@-moz-keyframes cssAnimation3 {
+from { -moz-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -moz-transform: rotate(360deg) scale(0.339) skew(1deg) translate(-300px); }
+}
+@-o-keyframes cssAnimation3 {
+from { -o-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -o-transform: rotate(360deg) scale(0.339) skew(1deg) translate(-300px); }
+}
+
+
+
+
+.animation-4 {
+-webkit-animation: cssAnimation4 1s 1 ease;
+-moz-animation: cssAnimation4 1s 1 ease;
+-o-animation: cssAnimation 1s 1 ease;
+}
+@-webkit-keyframes cssAnimation4 {
+from { -webkit-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -webkit-transform: rotate(360deg) scale(1.153) skew(1deg) translate(-300px); }
+}
+@-moz-keyframes cssAnimation4 {
+from { -moz-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -moz-transform: rotate(360deg) scale(1.153) skew(1deg) translate(-300px); }
+}
+@-o-keyframes cssAnimation4 {
+from { -o-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -o-transform: rotate(360deg) scale(1.153) skew(1deg) translate(-300px); }
+}
+
+
+
+.animation-5 {
+-webkit-animation: cssAnimation5 0.7267s 1 ease;
+-moz-animation: cssAnimation5 0.7267s 1 ease;
+-o-animation: cssAnimation5 0.7267s 1 ease;
+}
+@-webkit-keyframes cssAnimation5 {
+from { -webkit-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -webkit-transform: rotate(208deg) scale(0.1) skew(1deg) translate(0px); }
+}
+@-moz-keyframes cssAnimation5 {
+from { -moz-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -moz-transform: rotate(208deg) scale(0.1) skew(1deg) translate(0px); }
+}
+@-o-keyframes cssAnimation5 {
+from { -o-transform: rotate(4deg) scale(1) skew(1deg) translate(10px); }
+to { -o-transform: rotate(208deg) scale(0.1) skew(1deg) translate(0px); }
+}
+
+.delay-1 {
+	-webkit-animation-delay: 1s;
+}
+
+.delay-2 {
+	-webkit-animation-delay: 1s;
+}
+.delay-3 {
+	-webkit-animation-delay: 1s;
+}
+.delay-4 {
+	-webkit-animation-delay: 1s;
+}
+.delay-5 {
+	-webkit-animation-delay: 1s;
+}
+.visible-1 {
+	display: block;
+}
+.visible-2 {
+	display: block;
+}
+.visible-3 {
+	display: block;
+}
+.visible-4 {
+	display: block;
+}
+.visible-5 {
+	display: block;
+}
+.bounce-moi {
+  -webkit-animation-name: bounce;
+  animation-name: bounce;
+  -webkit-transform-origin: center bottom;
+  transform-origin: center bottom;
+}

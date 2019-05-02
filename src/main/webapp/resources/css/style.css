@@ -1,0 +1,684 @@
+@charset "UTF-8";
+
+.main {
+	margin-top: 50px;
+}
+.card-title {
+	font-size: 10px;
+}
+#liste {
+	display: inline;
+	width: 100px;
+}
+
+.div-alert {
+	width: 70%;
+}
+
+/* ========================================= */
+/* ****** Pour la page de contact
+/* ========================================== */
+#container-contact {
+	background-image: url("resources/images/background_contact.jpg");
+	height: auto;
+	margin-top: 50px;
+	margin-bottom: 200px;
+}
+
+.contact {
+	font-size: 15px;
+}
+
+.input {
+	font-size: 25px;
+	line-height: 40px;
+}
+
+.icones {
+	font-size: 25px;
+}
+
+/* ========================================= */
+/* ****** Fin page de contact
+/* ========================================== */
+
+/* ========================================= */
+/* ****** Pour les pages des clients
+/* ========================================== */
+.client-h2 {
+	color: #FFFFFF;
+	margin-top: 50px;
+}
+
+.div-favoris {
+	width: 1100px;
+	/* 	float: right; */
+	height: 200px;
+	padding-left: 500px;
+	padding-top: 50px;
+	background-color: #000000;
+	font-size: 30px;
+	padding-bottom: 20px;
+}
+
+.div-favoris-accueil {
+	background-color: #000000;
+	width: 300px;
+	float: right;
+	margin-right: -200px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	font-size: 30px;
+	border-radius: 20px;
+}
+
+.image-favoris {
+	height: 50px;
+	margin-right: 50px;
+}
+
+.ajouter-aux-favoris {
+	text-decoration: none;
+	color: #79D748;
+}
+
+.mes-favoris {
+	text-decoration: none;
+	color: #D2B829;
+}
+
+.msgFavori {
+	margin: auto;
+	clear: both;
+	width: 1000px;
+	text-align: center;
+	background-color: #84888E;
+	color: #79D748;
+	font-size: 50px;
+}
+
+.msgFavori h2 {
+	line-height: 200%;
+	font-weight: bold;
+}
+
+.client-h1 {
+	color: #FFFFFF;
+}
+
+.div-etoiles {
+	float: left;
+	width: 400px;
+	padding-top: 10px;
+	text-align: center;
+	background-color: #ffffff;
+}
+
+.etoiles {
+	margin-left: 1500px;
+}
+
+.titre-note {
+	font-size: 20px;
+	color: #000000;
+}
+
+.note {
+	color: red;
+}
+
+/* Notation des sociétés */
+.listeEtoile ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.listeEtoile ul li {
+	display: inline-block;
+	width: 16px;
+	text-align: left;
+	list-style-type: none;
+}
+
+.listeEtoile ul li img {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.note {
+	font-size: 20px;
+	color: #800000;
+}
+
+#score {
+	color: #800000;
+}
+
+#tableau-sondage {
+	font-family: verdana;
+	font-size: 12px;
+}
+
+#tableau-sondage td {
+	border: solid 1px black;
+	padding: 12px 3px;
+	text-align: center;
+}
+
+/* Fin pour la notation des sociétés */
+
+/* ========================================= */
+/* ****** Fin Pour les pages des clients
+/* ========================================== */
+
+/* ========================================= */
+/* ****** Pour la page de détail de société
+/* ========================================== */
+.page-detail li {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.div-class {
+	margin: auto;
+	width: auto;
+	line-height: 50px;
+	font-size: 25px;
+	font-weight: bold;
+	text-align: center;
+}
+.div-class-display-none {
+	display: none;
+}
+
+
+.page-detail article {
+	font-size: 15px;
+}
+
+.image-entete {
+	height: 500px;
+}
+
+.div-image-detail {
+	width: 40%;
+	margin-left: 70px;
+	margin-bottom: 20px;
+	margin-top: 50px;
+	float: left;
+}
+
+.image-1 {
+	clear: both;
+}
+
+.image-2 {
+	float: right;
+	width: 40%;
+	margin-right: 20px;
+}
+
+image-3 {
+	float: left;
+	padding-bottom: 100px;
+	width: 30%;
+}
+
+.image-detail {
+	width: 400px;
+}
+
+.img-2 {
+	width: 450px;
+	margin-top: 20px;
+}
+
+.img-3 {
+	width: 100%;
+	max-height: 500px;
+}
+
+.description-detail {
+	margin-top: 70px;
+	width: 40%;
+	font-size: 17px;
+}
+
+.description-detail h4 {
+	font-size: 25px;
+}
+
+.div-ul {
+	float: left;
+}
+
+.div-horaires {
+	wigth: 40%;
+	margin: 70px;
+}
+
+/* ========================================= */
+/* ****** Fin page de détail de société
+/* ========================================== */
+.navbar {
+	height: 70px;
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+}
+
+.logo {
+	padding-bottom: 30px;
+}
+
+.ajouter {
+	margin-top: 100px;
+	background-color: #dddddd;
+	padding-bottom: 20px;
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+}
+
+.div-titre-h1 {
+	text-align: center;
+	width: 70%;
+	background-color: #111111;
+	border-radius: 75px;
+	margin: 0 auto;
+	margin-bottom: 50px;
+	margin-top: 50px;
+}
+
+.div-titre-h1-artisan {
+	background-color: #ffffff;
+}
+
+.div-titre-h1-detail {
+	text-align: center;
+	margin: 0 auto;
+	margin-bottom: 50px;
+	margin-top: 50px;
+}
+
+.titre-h1 {
+	font-size: 38px;
+	text-shadow: -1px -1px #9df, 1px 1px #49d, -3px 0 4px #000;
+	font-family: "Segoe print", Arial, Helvetica, sans-serif;
+	color: #c0c0c0;
+	padding: 24px 32px 32px 32px;
+	font-weight: lighter;
+	text-align: center;
+	display: inline;
+	line-height: 70px;
+}
+
+.titre-h1-artisan {
+	color: #08088A;
+}
+
+.titre-h1-detail {
+	font-size: 68px;
+	text-shadow: -1px -1px #9df, 1px 1px #49d, -3px 0 4px #000;
+	font-family: "Segoe print", Arial, Helvetica, sans-serif;
+	color: #4169A1;
+	padding: 24px 32px 32px 32px;
+	font-weight: lighter;
+	text-align: center;
+	display: inline;
+	line-height: 70px;
+}
+
+@font-face {
+	font-family: 'Glyphicons Halflings';
+	src: url('resources/fonts/glyphicons-halflings-regular.eot');
+	src: url('resources/fonts/glyphicons-halflings-regular.eot?#iefix')
+		format('embedded-opentype'),
+		url('resources/fonts/glyphicons-halflings-regular.woff')
+		format('woff'), url('../fonts/glyphicons-halflings-regular.ttf')
+		format('truetype'),
+		url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular')
+		format('svg');
+}
+
+.titre-menu {
+	font-family: "Serif (serif red), Times New Roman", Times;
+	font-size: 30px;
+}
+
+.container {
+	margin: auto;
+	/* 	margin-right: -100px; */
+	/* 	margin-top: 20px; */
+}
+
+.container detail {
+	height: auto;
+}
+
+.container-detail-client {
+	height: auto;
+}
+
+.messageMail {
+	font-size: 15px;
+	font-weight: bold;
+	width: 550px;
+	height: 50px;
+}
+
+nav li {
+	font-size: 12px;
+	width: 150px;
+	text-align: center;
+}
+
+.titre-form-coordonnees {
+	color: #b9a64d;
+}
+
+.ulForm {
+	padding-left: 50px;
+}
+
+.mesCheckBoxes {
+	margin: 100px;
+}
+
+.titre-legend {
+	color: #ffffff;
+}
+
+.titre-legend-signup {
+	color: #105F65;
+	font-size: 24px;
+/* 	margin-left: 200px; */
+	margin-top: 20px;
+}
+
+.titre-legend-coordonnees {
+	color: #105F65;
+	margin-left: 100px;
+	margin-top: 20px;
+}
+
+.coordonnees {
+	margin-left: 100px;
+}
+
+.dropdown {
+	text-align: left;
+	width: 100px;
+}
+
+.categories {
+	float: left;
+	width: 160px;
+	height: 30px;
+}
+
+.categories1 {
+	width: 150px;
+}
+
+nav a:hover {
+	background-color: #797C7C;
+}
+
+.nav-link:hover {
+	background-color: #797C7C;
+}
+
+.titre-page {
+	margin: 30px;
+	color: #b9a64d;
+}
+
+.form-coordonnees {
+	margin: auto;
+	height: auto;
+	background-color: #222222;
+	color: #ffffff;
+	padding-right: 50px;
+	/* 	padding-left: -250px; */
+	padding-bottom: 50px;
+	padding-top: 30px;
+	margin-top: 50px;
+	margin-bottom: 150px;
+	border-radius: 40px;
+}
+
+.artisan {
+	background-color: #ffffff;
+	color: #000000;
+	margin-bottom: 200px;
+}
+
+.message-vacances {
+	width: 100%;
+	height: 50px;
+	font-size: 30px;
+	text-align: center;
+}
+
+.sous-image {
+	margin-top: 15px;
+	font-size: 13px;
+}
+
+.artisan-vacances {
+	margin-bottom: 200px;
+	height: 450px;
+	padding-top: 30px;
+	background-color: #B4C8D4;
+}
+
+.form-element {
+	/* 	margin-left: 250px; */
+	margin: auto;
+	height: auto;
+	width: 150%;
+	background-color: #444444;
+	padding: 20px;
+	color: #ffffff;
+}
+
+.form-element-artisan-vacances {
+	background-color: #29A5C0;
+	margin: 35px;
+	margin-top: 30px;
+}
+
+.dates-vacances {
+	margin-left: 20px;
+	background-color: #245B7D;
+}
+
+.modifier-coordonnees {
+	margin: auto;
+	width: 70%;
+}
+
+.login {
+	margin: auto;
+	margin-left: 0px;
+	width: 70%;
+}
+.form-login {
+	width: 545px;
+	margin: 0px;
+}
+
+.signup {
+	margin: auto;
+	background-color: #E9B2D6;
+	height: auto;
+	padding-bottom: 200px;
+	padding-top: 50px;
+}
+
+.signup-admin {
+	margin: auto;
+	background-color: #bbbbbb;
+	height: auto;
+	padding-bottom: 200px;
+	padding-top: 50px;
+}
+.form-element-admin {
+	width: 60%;
+	margin-left: 250px;
+}
+
+.form-element-date {
+	height: 100px;
+}
+
+.categorie {
+	height: auto;
+	width: 100%;
+}
+
+.creerSociete {
+	/* 	margin-left: 180px; */
+	height: auto;
+	/* 	width: 100%; */
+}
+
+.form-metier {
+	background-color: #D0D5D4;
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-top: 30px;
+	margin-top: 50px;
+}
+
+.metier {
+	height: 200px;
+	padding: 10px;
+}
+
+.nouvelleCategorie {
+	width: auto;
+	display: none;
+	margin-top: 20px;
+}
+
+.nouvellePrestation {
+	display: none;
+	margin-bottom: 30px;
+	margin-top: 10px;
+}
+
+.spanCheckbox {
+	color: #8DA9AA;
+	weight: bold;
+}
+
+#nouveauxMetiers {
+	height: auto;
+	margin-bottom: 50px;
+}
+
+.textarea {
+	height: 120px;
+}
+
+form label {
+	font-size: 10px;
+	margin-right: 10px;
+}
+
+form select {
+	font-size: 13px;
+}
+
+.container-admin {
+	background-color: #aaaaaa;
+	background-attachment:fixed;
+	height: auto;
+	margin-left: -100px;
+	padding-left: 200px;
+	margin-top: 50px;
+	padding-bottom: 500px;
+	 
+}
+
+.checkbox-profil {
+	margin-left: 30px;
+}
+
+.form-submit {
+	margin-bottom: 30px;
+}
+
+@font-face {
+	font-family: 'Glyphicons Halflings';
+	src: url('/resources/fonts/glyphicons-halflings-regular.eot');
+	src: url('/resources/fonts/glyphicons-halflings-regular.eot?#iefix')
+		format('embedded-opentype'),
+		url('/resources/fonts/glyphicons-halflings-regular.woff')
+		format('woff'), url('../fonts/glyphicons-halflings-regular.ttf')
+		format('truetype'),
+		url('/resources/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular')
+		format('svg');
+}
+
+footer {
+	height: 70px;
+	margin-top: 150px;
+}
+
+.copyright {
+	margin-top: 20px;
+}
+
+/* boutons */
+
+.bouton5 {
+	width: 200px;
+	margin-bottom: 20px;
+	border-radius:12px 0 12px 0;
+	background: #d34836;
+	border:none;
+	color:#fff;
+	font:bold 12px Verdana;
+	padding:6px 0 6px 0;
+}
+
+.bouton6 {
+	width: 200px;
+	border-radius:12px 0 12px 0;
+	background: #478bf9;
+	border:none;
+	color:#fff;
+	font:bold 12px Verdana;
+	padding:6px 0 6px 0;
+}
+
+.bouton14 {
+	border: none;
+	padding: 6px 0 6px 0;
+	border-radius: 50%;
+	background: #478bf9;
+	font: bold 13px Arial;
+	color: #fff;
+	width: 100%;
+}
+
+/* Pour la page d'erreurs */
+.alert-erreur {
+	margin-top: 100px;
+	margin-bottom: 800px;
+	text-align: center;
+}
+h1 {
+	font-size: 50px;
+	font-weight: bold;
+}
+h2 {
+	font-size: 32px;
+}
+h3 {
+	font-size: 25px;
+}
