@@ -47,7 +47,6 @@ public class ArtisanController {
 			@RequestParam(name = "id", required = true) long societeId, Model model) {
 
 		// Si l'id de la société est différent de 0 donc il s'agit d'une modification de
-		// société
 		if (societeId != 0) { // c'est une modification de société
 			Societe s = societeDao.findById(societeId);
 
