@@ -13,7 +13,7 @@
 <br />
 <br />
 <div class="container container-detail-client"
-	style=" margin-top: -10px; height: auto; width: 1200px;">
+	style=" margin-top: -10px; height: auto; width: 1200px; margin-bottom: 400px;">
 
 	<div class="div-titre-h1">
 		<h1 class="my-4 titre-h1">Liste des sociétés <c:out value="${msgTitre }"/></h1>
@@ -27,7 +27,7 @@
 			<div class="col-sm-6 col-md-4 col-lg-3 portfolio-item">
 				<div class="card h-100"
 					style="background-color: #222222; color: #ffffff">
-					<a href="societe/societe-detail?id=${s.id }"><img
+					<a href="client/societe/societe-detail?id=${s.id }"><img
 						class="card-img-top"
 						src="<c:url value="/resources/images/societes/vignettes/${s.images[1].nom}"/>"
 						alt="${s.images[1].nom }" /></a>

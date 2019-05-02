@@ -19,7 +19,7 @@
 
 
 	
-	<div class="container" style="margin-top: 100px;">
+	<div class="container" style="margin-top: 100px; margin-bottom: 500px;">
 	<c:forEach var="soc" items="${societes}" varStatus="st">
 	    
 	        <div class="col-sm-6 col-md-4 col-lg-3 portfolio-item">

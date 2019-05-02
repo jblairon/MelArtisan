@@ -833,6 +833,7 @@ public class SocieteController {
 		}
 		if (request.getSession().getAttribute("user_id") != null
 				&& (boolean) request.getSession().getAttribute("user_client")) {
+			System.out.println("je suis client");
 			return new ModelAndView("client/detailSociete", model);
 		}
 
