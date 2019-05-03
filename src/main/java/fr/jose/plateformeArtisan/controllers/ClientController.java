@@ -174,7 +174,7 @@ public class ClientController {
 //		return "client/accueil";
 //	}
 
-	@RequestMapping("/client/contact") // @requestMapping(value="/autenticate", method=RequestMethod.GET)
+	@RequestMapping("/client/contact") 
 	public ModelAndView showContact(HttpServletRequest request, @RequestParam(name="id", required=false) long id) {
 		Map<String, Object> model = new HashMap<>();
 
@@ -184,7 +184,6 @@ public class ClientController {
 		if(id != 0) {
 			Societe s = societeDao.findById(id);
 			cf.setEmailTo(s.getEmail());
-			System.out.println("societeNom = " + s.getNom());
 			model.put("societeNom", s.getNom());
 		}
 		

@@ -41,7 +41,7 @@
 
 	<c:choose>
 		<c:when test="${societeNom == null }">
-			<div class="div-titre-h1">
+			<div class="div-titre-h1" style="background-color: #EFFBF2;">
 				<h1 class="titre-h1 ">Contactez MelArtisans</h1>
 			</div>
 		</c:when>

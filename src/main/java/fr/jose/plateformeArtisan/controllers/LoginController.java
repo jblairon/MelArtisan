@@ -74,7 +74,7 @@ public class LoginController {
 			}
 
 			else if (form.isContact()) {
-				return "redirect:/client/contact";
+				return "redirect:/client/contact?id=0";
 			} else if (u.isClient()) {
 				return "redirect:/client/accueil";
 			} else if (u.isArtisan()) {
