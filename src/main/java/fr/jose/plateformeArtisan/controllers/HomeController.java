@@ -42,11 +42,6 @@ public class HomeController {
 			@RequestParam(name = "messageSuccess", required = false) String messageSuccess) {
 		List<Categorie> categories = new ArrayList<Categorie>();
 		
-//		if(request.getSession().getAttribute("user_id") == null) {
-//			boolean sessionExpiree = true;
-//			return "redirect:/authenticate?sessionExpiree="+sessionExpiree;
-//		}
-		
 		try {
 			categories = cat.findAll() ;
 			model.addAttribute("categories", categories);

@@ -3,6 +3,14 @@
 .main {
 	margin-top: 50px;
 }
+
+#body-artisan {
+	background-color: #A9D0F5;
+	padding-top: 54px;
+	background-attachment: fixed;
+	margin-top: 50px;
+}
+
 .card-title {
 	font-size: 10px;
 }
@@ -24,6 +32,7 @@
 	margin-top: 50px;
 	margin-bottom: 200px;
 }
+
 
 .contact {
 	font-size: 15px;

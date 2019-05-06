@@ -85,6 +85,7 @@ public class LoginController {
 			} else if (u.isClient()) {
 				return "redirect:/client/accueil";
 			} else if (u.isArtisan()) {
+				request.getSession().setMaxInactiveInterval(60);
 				return "redirect:/artisan/ma-societe?id=" + u.getMaSociete().getId();
 			}
 

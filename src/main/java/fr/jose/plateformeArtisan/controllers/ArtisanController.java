@@ -24,9 +24,11 @@ import fr.jose.plateformeArtisan.beans.SocieteDateVacances;
 import fr.jose.plateformeArtisan.dao.HoraireDao;
 import fr.jose.plateformeArtisan.dao.SocieteDao;
 import fr.jose.plateformeArtisan.dao.SocieteDateVacancesDao;
+import fr.jose.plateformeArtisan.formbeans.ContactForm;
 import fr.jose.plateformeArtisan.formbeans.HorairesForm;
 import fr.jose.plateformeArtisan.formbeans.SocieteDateVacancesForm;
 import fr.jose.plateformeArtisan.tools.DateUtils;
+import fr.jose.plateformeArtisan.tools.EmailTools;
 import fr.jose.plateformeArtisans.services.SocieteServices;
 
 @Controller
@@ -51,6 +53,7 @@ public class ArtisanController {
 			Societe s = societeDao.findById(societeId);
 
 			model.addAttribute("horaires", s.getHoraires());
+			model.addAttribute("societe", s);
 		}
 
 		return "artisan/mesHoraires";
@@ -155,6 +158,7 @@ public class ArtisanController {
 		}
 
 		model.put("vacances-form", form);
+		model.put("societe", s);
 
 		return new ModelAndView("artisan/mesProchainesVacances", model);
 	}
@@ -207,7 +211,76 @@ public class ArtisanController {
 			
 		}
 
-		return new ModelAndView("redirect:/artisan/ma-societe?id="+request.getSession().getAttribute("societeId"), model);
+		return new ModelAndView("redirect:/artisan/ma-societe?id="+s.getId(), model);
 
 	}
+	
+	@Transactional
+	@RequestMapping("/artisan/contact")
+	public ModelAndView showContact(HttpServletRequest request, @RequestParam(name = "id", required = false) long id,
+			@RequestParam(name = "user_id", required = false) long user_id) {
+		Map<String, Object> model = new HashMap<>();
+
+		System.out.println("session = " + request.getSession().getAttribute("user_id"));
+		ContactForm cf = new ContactForm();
+		if (request.getSession().getAttribute("user_email") != null) {
+			String email = request.getSession().getAttribute("user_email").toString();
+			cf.setEmail(email);
+		}
+
+		if (id != 0) {
+			Societe s = societeDao.findById(id);
+			cf.setEmailTo(s.getEmail());
+			model.put("societeNom", s.getNom());
+			model.put("societe", s);
+		}
+		
+		Societe societeArtisan = societeDao.findById(user_id);
+		model.put("societe", societeArtisan);
+
+		model.put("contact-form", cf);
+		return new ModelAndView("artisan/contact", model);
+	}
+
+	@RequestMapping(value = "/artisan/envoyer-message", method = RequestMethod.POST)
+	public String sendMessage(HttpServletRequest request, @Valid @ModelAttribute("contact-form") ContactForm form,
+			BindingResult result, Model model) {
+		String messageErreur = null;
+		String messageSuccess = null;
+
+		if (result.hasErrors()) {
+			model.addAttribute("errors", result);
+			model.addAttribute("contact-form", form);
+			model.addAttribute("msg", "Assurez-vous que les champs soient correctement remplis");
+
+			return "client/contact";
+		}
+
+		String from = form.getEmail();
+		String subject = form.getSubject();
+		String message = form.getMessage();
+
+		if (form.getEmailTo() != null) {
+			messageErreur = EmailTools.sendEmailToArtisan(form.getEmail(), form.getSubject(), form.getMessage(),
+					form.getEmailTo());
+		}
+
+		try {
+			messageErreur = EmailTools.sendEmailToAdmin(from, subject, message);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (messageErreur != null) {
+			model.addAttribute("messageErreur", messageErreur);
+			return "client/contact";
+		} else {
+			messageSuccess = "Votre message a bien été envoyé";
+			model.addAttribute("messageSuccess", messageSuccess);
+		}
+
+		return "redirect:/client/accueil";
+
+	}
+	
 }

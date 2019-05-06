@@ -5,7 +5,7 @@
 	version="2.5">
 	
 	<session-config>
-        <session-timeout>1</session-timeout>
+        <session-timeout>10</session-timeout>
     </session-config>
 	
 	<context-param>

@@ -3,6 +3,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
 	prefix="decorator"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="true" isELIgnored="false"
 	contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
@@ -33,11 +34,7 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <style>
-body {
-	background-image: url("resources/images/background_liste_front.jpg");
-	padding-top: 54px;
-	background-attachment: fixed;
-}
+
 
 .copyright {
 	margin-top: 20px;
@@ -70,13 +67,14 @@ body {
 
 </head>
 
-<body>
+<body id="body-artisan">
 
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 		<div class="container logo">
 			<a class="navbar-brand titre-menu"
-				href="artisan/ma-societe?id=${sessionScope.societeId }">MelArtisans</a>
+				href="artisan/ma-societe?id=${societe.id }">MelArtisans +
+				${societe.id }</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -85,9 +83,10 @@ body {
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item active accueil"><a class="nav-link"
-						href="artisan/ma-societe?id=${sessionScope.societeId }"><span
-							class="glyphicon glyphicon-home"></span>&nbsp; Accueil <span
-							class="sr-only">(current)</span> </a></li>
+						href="artisan/ma-societe?id=${societe.id }"><span
+							class="glyphicon glyphicon-home"></span>&nbsp; Accueil + <c:out
+								value="${societe.id }" /> <span class="sr-only">(current)</span>
+					</a></li>
 				</ul>
 			</div>
 		</div>
@@ -98,14 +97,14 @@ body {
 			<ul class="navbar-nav ml-auto">
 
 				<li class="nav-item" style="width: 200px"><a class="nav-link"
-					href="artisan/societe/mes-horaires?id=${sessionScope.societeId }"><span
+					href="artisan/societe/mes-horaires?id=${societe.id }"><span
 						class="glyphicon glyphicon-time"></span>&nbsp Modifier mes
 						horaires</a></li>
 
 				<li class="nav-item" style="width: 200px"><a class="nav-link"
-					href="artisan/societe/mes-prochaines-vacances?id=${sessionScope.societeId }"><span
-						class="glyphicon glyphicon-calendar"></span>&nbsp Mes prochaines
-						vacances</a></li>
+					href="artisan/societe/mes-prochaines-vacances?id=${societe.id }"><span
+						class="glyphicon glyphicon-calendar"></span>&nbsp Mes prochaines +
+						${societe.id } vacances</a></li>
 
 				<li class="nav-item"><a class="nav-link"
 					href="artisan/disconnect"><span
@@ -113,9 +112,9 @@ body {
 
 
 				<li class="nav-item"><a class="nav-link"
-					href="authenticate?contact=true"> <span
-						class="glyphicon glyphicon-envelope"></span>&nbsp Contact
-				</a></li>
+					href="artisan/contact?contact=false&id=0&user_id=${societe.id }"><span
+						class="glyphicon glyphicon-envelope"></span>&nbsp Contacter
+						MelArtisan</a></li>
 			</ul>
 		</div>
 	</nav>
