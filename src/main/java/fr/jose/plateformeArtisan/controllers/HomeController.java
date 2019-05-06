@@ -2,11 +2,9 @@ package fr.jose.plateformeArtisan.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.catalina.connector.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.mysql.jdbc.SQLError;
 
 import fr.jose.plateformeArtisan.beans.Categorie;
 import fr.jose.plateformeArtisan.dao.CategorieDao;
@@ -45,6 +41,12 @@ public class HomeController {
 	public String home(Model model, HttpServletRequest request, @RequestParam(name = "messageErreur", required = false) String messageErreur,
 			@RequestParam(name = "messageSuccess", required = false) String messageSuccess) {
 		List<Categorie> categories = new ArrayList<Categorie>();
+		
+//		if(request.getSession().getAttribute("user_id") == null) {
+//			boolean sessionExpiree = true;
+//			return "redirect:/authenticate?sessionExpiree="+sessionExpiree;
+//		}
+		
 		try {
 			categories = cat.findAll() ;
 			model.addAttribute("categories", categories);

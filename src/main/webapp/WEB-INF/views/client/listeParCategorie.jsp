@@ -15,7 +15,7 @@
 <!-- <a href="test-data">Insérer des données de test</a> -->
 <br />
 	
-<%-- <h1 class="my-4 client-h1">Sociétés catégorie <c:out value="${societes.get(0).categorie.libelle }"></c:out> </h1> --%>
+<h1 class="my-4 client-h1">Sociétés catégorie <c:out value="${societes.get(0).categorie.libelle }"></c:out> </h1>
 
 
 	
@@ -28,13 +28,13 @@
 					class="card-img-top"
 					src="<c:url value="/resources/images/societes/vignettes/${soc.images[1].nom }"/>"
 					alt="${soc.images[1].libelle}" /></a>
-	            <div class="card-body">
-	              <h4 class="card-title">${soc.nom}</h4>
+	            <div class="card-body" style="height: 120px; ">
+	              <h1 class="card-title" >${soc.nom}</h1>
 
-	              	<span>
+	              	<span style="float: left; font-size: 12px;">
 	              		<c:forEach var="met" items="${soc.metiers}">
-							<c:out value="${met.libelle}" />
-							<br />
+							<c:out value="${met.libelle}, " />
+							
 						</c:forEach>
 					</span>
 					<br />

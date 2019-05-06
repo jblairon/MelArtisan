@@ -2,7 +2,6 @@ package fr.jose.plateformeArtisan.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +11,7 @@ import javax.validation.Valid;
 //import org.eclipse.jdt.internal.compiler.ast.ForeachStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,7 +33,7 @@ public class ClientController {
 
 	@Autowired
 	private UtilisateurDao utilisateurDao;
-	
+
 	@Autowired
 	private SocieteDao societeDao;
 
@@ -50,32 +50,47 @@ public class ClientController {
 		return "client/account";
 	}
 
-	@RequestMapping(value = {"/client/disconnect", "/artisan/disconnect"}, method = RequestMethod.GET)
+	@RequestMapping(value = { "/client/disconnect", "/artisan/disconnect" }, method = RequestMethod.GET)
 	public String disconnect(HttpServletRequest request) {
 		request.getSession().invalidate();
 		return "redirect:/";
 	}
 
 	// Affichage du formulaire des coordonnées rempli
-	@RequestMapping("/client/coordonnees-utilisateur")
-	public String displayUtilisateurDetails(@RequestParam("id") long id, Model model) {
-		Utilisateur utilisateur = utilisateurDao.findById(id);
-		
-		String dateCreationStr = new SimpleDateFormat("dd/MM/yyyy").format(utilisateur.getDateCreation());
+	@Transactional
+	@RequestMapping(value = "/client/coordonnees-utilisateur", method = RequestMethod.GET)
+	public String displayUtilisateurDetails(HttpServletRequest request, @RequestParam("id") long id, Model model) {
+		System.out.println("id = " + id);
+		if (id != 0) {
+			Utilisateur utilisateur = null;
 
-		// Récupération du jour, mois et année pour le formulaire
-		String[] dateSplit = dateCreationStr.split("/");
-		int jour = Integer.parseInt(dateSplit[0]);
-		int mois = Integer.parseInt(dateSplit[1]);
-		int annee = Integer.parseInt(dateSplit[2]);
+			try {
+				utilisateur = utilisateurDao.findById(id);
+			} catch (Exception e) {
+				e.printStackTrace();
+				model.addAttribute("msg", "Erreur de connexion à la base de données pour la raison suivante : ");
+				model.addAttribute("msgErreur", e.getMessage());
+				return "pageErreurs";
 
-		EditUtilisateurForm form = new EditUtilisateurForm(utilisateur.getGenre(), utilisateur.getPrenom(),
-				utilisateur.getNom(), utilisateur.getAdresse().getNumero(), utilisateur.getAdresse().getVoie(),
-				utilisateur.getAdresse().getCodePostal(), utilisateur.getAdresse().getVille(), utilisateur.getEmail(),
-				utilisateur.getMdp(), utilisateur.isAdmin(), utilisateur.isClient(), utilisateur.getSocietes(), jour,
-				mois, annee);
+			}
 
-		model.addAttribute("utilisateur-form", form);
+			String dateCreationStr = new SimpleDateFormat("dd/MM/yyyy").format(utilisateur.getDateCreation());
+
+			// Récupération du jour, mois et année pour le formulaire
+			String[] dateSplit = dateCreationStr.split("/");
+			int jour = Integer.parseInt(dateSplit[0]);
+			int mois = Integer.parseInt(dateSplit[1]);
+			int annee = Integer.parseInt(dateSplit[2]);
+
+			EditUtilisateurForm form = new EditUtilisateurForm(utilisateur.getGenre(), utilisateur.getPrenom(),
+					utilisateur.getNom(), utilisateur.getAdresse().getNumero(), utilisateur.getAdresse().getVoie(),
+					utilisateur.getAdresse().getCodePostal(), utilisateur.getAdresse().getVille(),
+					utilisateur.getEmail(), utilisateur.getMdp(), utilisateur.isAdmin(), utilisateur.isClient(),
+					utilisateur.getSocietes(), jour, mois, annee);
+
+			model.addAttribute("utilisateur-form", form);
+			model.addAttribute("user", utilisateur);
+		}
 
 		return "client/details";
 	}
@@ -129,43 +144,38 @@ public class ClientController {
 			msgMail = "Cette adresse mail est déjà utilisée";
 			model.addAttribute("msgMail", msgMail);
 //			return "client/details";
-			displayUtilisateurDetails(form.getId(), model);
+			displayUtilisateurDetails(request, form.getId(), model);
 		}
 
 		return "redirect:/client/account";
 	}
 
 	@RequestMapping(value = "/client/ajouter-aux-favoris", method = RequestMethod.GET)
-	public String ajouterSociete(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("id") long id, Model model) {
-
+	public String ajouterSociete(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") long id,
+			Model model) {
 
 		Societe societe = societeDao.findById(id);
 		String ajouteAuxFavoris = null;
 		boolean exist;
 
 		Utilisateur u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
-		for(int j = 0; j < u.getSocietes().size(); j++) {
+		for (int j = 0; j < u.getSocietes().size(); j++) {
 			System.out.println("societe id = " + u.getSocietes().get(j).getId());
 		}
-		
-		System.out.println("u.getSocietes() = " + u.getSocietes().size());
+
 		for (int i = 0; i < u.getSocietes().size(); i++) {
-			if(u.getSocietes().get(i).getId() == societe.getId()) {
+			if (u.getSocietes().get(i).getId() == societe.getId()) {
 				ajouteAuxFavoris = "non";
 			}
 		}
-		
-		if(ajouteAuxFavoris == null) {
+
+		if (ajouteAuxFavoris == null) {
 			u.getSocietes().add(societe);
 			utilisateurDao.update(u);
 			ajouteAuxFavoris = "oui";
 		}
-		
-		System.out.println("dans client ajouteAuxFavoris = " + ajouteAuxFavoris);
-		
-
-		return "redirect:/client/societe/societe-detail?id="+id+"&ajouteAuxFavoris="+ajouteAuxFavoris;
+		model.addAttribute("user", u);
+		return "redirect:/client/societe/societe-detail?id=" + id + "&ajouteAuxFavoris=" + ajouteAuxFavoris;
 	}
 
 //	@RequestMapping(value = { "/client/accueil", "/admin/accueil" }, method = RequestMethod.GET)
@@ -174,20 +184,23 @@ public class ClientController {
 //		return "client/accueil";
 //	}
 
-	@RequestMapping("/client/contact") 
-	public ModelAndView showContact(HttpServletRequest request, @RequestParam(name="id", required=false) long id) {
+	@RequestMapping("/client/contact")
+	public ModelAndView showContact(HttpServletRequest request, @RequestParam(name = "id", required = false) long id,
+			@RequestParam(name = "user_id", required = false) long user_id) {
 		Map<String, Object> model = new HashMap<>();
 
-		String email = request.getSession().getAttribute("user_email").toString();
+		ContactForm cf = new ContactForm();
+		if (request.getSession().getAttribute("user_email") != null) {
+			String email = request.getSession().getAttribute("user_email").toString();
+			cf.setEmail(email);
+		}
 
-		ContactForm cf = new ContactForm(email, "", "");
-		if(id != 0) {
+		if (id != 0) {
 			Societe s = societeDao.findById(id);
 			cf.setEmailTo(s.getEmail());
 			model.put("societeNom", s.getNom());
 		}
-		
-		
+
 		model.put("contact-form", cf);
 		return new ModelAndView("client/contact", model);
 	}
@@ -209,9 +222,10 @@ public class ClientController {
 		String from = form.getEmail();
 		String subject = form.getSubject();
 		String message = form.getMessage();
-		
-		if(form.getEmailTo() != null) {
-			messageErreur = EmailTools.sendEmailToArtisan(form.getEmail(), form.getSubject(), form.getMessage(), form.getEmailTo());
+
+		if (form.getEmailTo() != null) {
+			messageErreur = EmailTools.sendEmailToArtisan(form.getEmail(), form.getSubject(), form.getMessage(),
+					form.getEmailTo());
 		}
 
 		try {
@@ -231,9 +245,10 @@ public class ClientController {
 		return "redirect:/client/accueil";
 
 	}
-	
+
 	@RequestMapping(value = "/client/mes-favoris", method = RequestMethod.GET)
-	public String listerSocietesFavorites(HttpServletRequest request, @RequestParam(name = "page", required = false) Integer page,
+	public String listerSocietesFavorites(HttpServletRequest request,
+			@RequestParam(name = "page", required = false) Integer page,
 			@RequestParam(name = "max", required = false) Integer max, Model model) {
 
 		if (max == null || max == 0)
@@ -243,12 +258,12 @@ public class ClientController {
 
 		String msgTitre = null;
 		int start = (page - 1) * max;
-		if(request.getSession().getAttribute("user_id")!= null){
+		if (request.getSession().getAttribute("user_id") != null) {
 			Utilisateur u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
 			msgTitre = " favorites";
 			model.addAttribute("msgTitre", msgTitre);
 			model.addAttribute("societes", u.getSocietes());
-			
+
 		}
 
 		long nb = societeDao.nbSocietes();

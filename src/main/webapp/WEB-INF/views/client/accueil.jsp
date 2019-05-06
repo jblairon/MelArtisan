@@ -34,7 +34,7 @@
 	<c:if test="${messageSuccess !=null}">
 
 		<div class="alert alert-block alert-success"
-			style="text-align: center; cliar: both">
+			style="text-align: center; clear: both">
 			<h2>
 				<c:out value="${messageSuccess }"></c:out>
 			</h2>
@@ -42,8 +42,8 @@
 	</c:if>
 
 
-	<div class="div-titre-h1" style="clear: both">
-		<h1 class="my-4 titre-h1">Catégories de métiers</h1>
+	<div class="div-titre-h1" style="clear: both; background-color: #eeeeee;">
+		<h1 class="my-4 titre-h1 titre-h1-artisan">Catégories de métiers</h1>
 	</div>
 
 	<!-- <div> -->
@@ -62,8 +62,8 @@
 						class="card-img-top"
 						src="<c:url value="/resources/images/categories/${cat.image }"/>"
 						alt="${cat.libelle }" /></a>
-					<div class="card-body">
-						<h3 class="card-title" style="text-align: center">${cat.libelle }</h3>
+					<div class="card-body" style="background-color: #eeeeee; color: #000000;">
+						<h2 class="card-title" style="text-align: center; font-size: 20px;">${cat.libelle }</h2>
 
 					</div>
 				</div>

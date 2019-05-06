@@ -43,9 +43,8 @@
 
 	
 
-	<!-- <interceptors>
-	
-		<beans:bean id="loginInterceptor" class="fr.jose.plateformeArtisan.LoginInterceptor" />
-	</interceptors> -->
+	<interceptors>
+		<beans:bean id="loginInterceptor" class="fr.jose.plateformeArtisan.controllers.LoginInterceptor" />
+	</interceptors>
 	
 </beans:beans>

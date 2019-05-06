@@ -92,6 +92,10 @@ footer {
 
 </head>
 <body>
+<c:if test="${user_id == null }">
+	<c:set var="user_id" value="0"></c:set>
+</c:if>
+
 
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
@@ -133,7 +137,7 @@ footer {
 				</c:forEach>
 
 
-				<li><a class="nav-link dropdown" href="categories">Tous</a></li>
+				<li><a class="nav-link dropdown" href="client/accueil">Tous</a></li>
 			</ul>
 		</div>
 		<!-- Fin menu déroulant -->
@@ -142,10 +146,10 @@ footer {
 			<ul class="navbar-nav ml-auto">
 
 
-
+				
 
 				<li class="nav-item coordonnees"><a class="nav-link"
-					href="client/modifier-coordonnees?id=${sessionScope.user_id}">
+					href="client/modifier-coordonnees?id=${user_id}">
 						<span class="glyphicon glyphicon-edit"></span>&nbsp Mes
 						coordonnées
 				</a></li>
@@ -155,7 +159,7 @@ footer {
 						class="glyphicon glyphicon-log-out"></span>&nbsp Déconnexion</a></li>
 
 				<li class="nav-item"><a class="nav-link"
-					href="client/contact?contact=false"><span
+					href="client/contact?contact=false&id=0&user_id=${user_id }"><span
 						class="glyphicon glyphicon-envelope"></span>&nbsp Contacter
 						MelArtisan</a></li>
 

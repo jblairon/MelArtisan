@@ -21,6 +21,21 @@
 		</div>
 	</c:if>
 
+	<c:if test="${messageSessionExpiree != null }">
+		<div id="messageSessionExpiree"
+			class="alert alert-block alert-danger col-lg-10 col-lg-offset-1"
+			style="text-align: center; display: none">
+			<h1>
+				<c:out value="${messageSessionExpiree }"></c:out>
+			</h1>
+			<h2>Merci de vous reconnecter</h2>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+	</c:if>
 
 	<div>
 		<div class="div-titre-h1"
@@ -113,6 +128,11 @@
 					$("div.form-group.mdp").addClass("has-success");
 				}
 			});
+		});
+
+		$(function() {
+			$("#messageSessionExpiree").show("slow");
+
 		});
 
 	}); // Fin doc ready

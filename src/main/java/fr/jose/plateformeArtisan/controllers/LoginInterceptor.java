@@ -4,8 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
@@ -13,15 +13,18 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		//rÈcupÈrer l'urlDemandee
+		//r√©cup√©rer l'urlDemandee
 		String requestedURI = request.getRequestURI();
-		//si l'url demandÈe est /client alors
+		//si l'url demand√©e est /client alors
 		if(requestedURI.contains("/client/") || requestedURI.contains("/admin/") ) {
-			//rÈcupÈrer la session
+			//r√©cup√©rer la session
 			HttpSession session = request.getSession();
+			String messageSessionExpiree = null;
 			//tester la pr√©sence de isConnected
-			if(session.getAttribute("utilisateur_id")==null) {
-				request.getRequestDispatcher("authenticate").forward(request, response);
+			if(session.getAttribute("user_id")==null) {
+				messageSessionExpiree = "Session expir√©e !!! ";
+				request.setAttribute("messageSessionExpiree", messageSessionExpiree);
+				request.getRequestDispatcher("/authenticate?user_id=0").forward(request, response);
 			}
 		
 		} //fin si

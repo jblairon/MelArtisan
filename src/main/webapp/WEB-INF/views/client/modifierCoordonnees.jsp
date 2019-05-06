@@ -1,22 +1,14 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ page session="false" isELIgnored="false"
-	contentType="text/html; charset=UTF-8"%>
-<html>
-<head>
-<meta charset="utf-8" />
-<title>Inscription</title>
 
 <style>
 legend {
-	margin-left: -500px;
+/* 	margin-left: -500px; */
 }
 </style>
-
-</head>
-<body>
-
 
 	<div class="container" style="margin-bottom: 200px; margin-top: 50px;">
 
@@ -127,7 +119,6 @@ legend {
 		</form:form>
 	</div>
 
-	</div>
 
 	<br />
 	<br />
@@ -137,5 +128,4 @@ legend {
 	<script
 		src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-</body>
-</html>
+

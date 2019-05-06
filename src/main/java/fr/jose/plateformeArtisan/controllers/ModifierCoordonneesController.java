@@ -31,49 +31,64 @@ public class ModifierCoordonneesController {
 
 	@Autowired
 	private UtilisateurDao utilisateurDao;
-	
+
 	@Autowired
 	private AdresseDao adresseDao;
 
-	@RequestMapping(value= {"/client/modifier-coordonnees", "/admin/modifier-coordonnees"}, method = RequestMethod.GET)
-	public ModelAndView modifierCoordonnees(HttpServletRequest request, 
+	@RequestMapping(value = { "/client/modifier-coordonnees",
+			"/admin/modifier-coordonnees" }, method = RequestMethod.GET)
+	public ModelAndView modifierCoordonnees(HttpServletRequest request,
 			@RequestParam(name = "id", required = true) long id) {
 		Map<String, Object> model = new HashMap<>();
-		
-		Utilisateur u = utilisateurDao.findById(id);
-		
-		// récupération de l'objet SignUpForm
-		SignUpForm form = new SignUpForm();
-		
-		//on remplit les champs du formulaire par les données de l'utilisatur
-		form.setCodePostal(String.valueOf(u.getAdresse().getCodePostal()));
-		form.setComplement(u.getAdresse().getComplement());
-		form.setEmail(u.getEmail());
-		
-		String ddn = DateUtils.stringSqlToLocalDate_FR(u.getDateDeNaissance().toString());
-		form.setDateDeNaissance(ddn);
-		
-		form.setGenre(u.getGenre().toString());
-		form.setMdp(u.getMdp());
-		form.setNom(u.getNom());
-		form.setNumero(String.valueOf(u.getAdresse().getNumero()));
-		form.setPrenom(u.getPrenom());
-		form.setVille(u.getAdresse().getVille());
-		form.setVoie(u.getAdresse().getVoie());
-		form.setId(u.getId());
-		
-		if((boolean) request.getSession().getAttribute("user_admin")) {
-			form.setAdmin(u.isAdmin());
-			form.setArtisan(u.isArtisan());
-			form.setClient(u.isClient());
-		}
-		
-		model.put("signup-form", form);
 
-		if((boolean) request.getSession().getAttribute("user_admin")) {
-			return new ModelAndView("admin/modifierCoordonnees", model);
-		}
+		if (id != 0) {
+			Utilisateur u = null;
+
+			try {
+				u = utilisateurDao.findById(id);
+			} catch (Exception e) {
+				e.printStackTrace();
+				model.put("msg", "Erreur de connexion à la base de données pour la raison suivante : ");
+				model.put("msgErreur", e.getMessage());
+				return new ModelAndView("pageErreurs", model);
+
+			}
+
+			// récupération de l'objet SignUpForm
+			SignUpForm form = new SignUpForm();
+
+			// on remplit les champs du formulaire par les données de l'utilisatur
+			form.setCodePostal(String.valueOf(u.getAdresse().getCodePostal()));
+			form.setComplement(u.getAdresse().getComplement());
+			form.setEmail(u.getEmail());
+
+			String ddn = DateUtils.stringSqlToLocalDate_FR(u.getDateDeNaissance().toString());
+			form.setDateDeNaissance(ddn);
+
+			form.setGenre(u.getGenre().toString());
+			form.setMdp(u.getMdp());
+			form.setNom(u.getNom());
+			form.setNumero(String.valueOf(u.getAdresse().getNumero()));
+			form.setPrenom(u.getPrenom());
+			form.setVille(u.getAdresse().getVille());
+			form.setVoie(u.getAdresse().getVoie());
+			form.setId(u.getId());
+
+			if (u.isAdmin()) {
+				form.setAdmin(u.isAdmin());
+				form.setArtisan(u.isArtisan());
+				form.setClient(u.isClient());
+			}
+
+			model.put("signup-form", form);
+
+			if (u.isAdmin()) {
+				return new ModelAndView("admin/modifierCoordonnees", model);
+			}
 			return new ModelAndView("client/modifierCoordonnees", model);
+		}
+		return null;
+
 	}
 
 	@RequestMapping(value = "/valider-coordonnees", method = RequestMethod.POST)
@@ -96,24 +111,24 @@ public class ModifierCoordonneesController {
 		}
 
 		Utilisateur u = utilisateurDao.findById((long) form.getId());
-		
+
 		u.getAdresse().setCodePostal(Integer.parseInt(form.getCodePostal()));
 		u.getAdresse().setComplement(form.getComplement());
 		u.getAdresse().setNumero(Integer.parseInt(form.getNumero()));
 		u.getAdresse().setVille(form.getVille());
 		u.getAdresse().setVoie(form.getVoie());
 		adresseDao.update(u.getAdresse());
-		
+
 		LocalDate ld = DateUtils.stringToSqlDate(form.getDateDeNaissance());
 		u.setDateDeNaissance(ld);
-		
+
 		u.setEmail(form.getEmail());
 		u.setGenre(Enum.valueOf(Genre.class, form.getGenre()));
 		u.setMdp(form.getMdp());
 		u.setNom(form.getNom());
 		u.setPrenom(form.getPrenom());
-		
-		if((boolean) request.getSession().getAttribute("user_admin")) {
+
+		if ((boolean) request.getSession().getAttribute("user_admin")) {
 			u.setAdmin(form.isAdmin());
 			u.setArtisan(form.isArtisan());
 			u.setClient(form.isClient());
@@ -131,7 +146,7 @@ public class ModifierCoordonneesController {
 			model.put("msgMail", msgMail);
 			return new ModelAndView("client/modifier-coordonnees", model);
 		}
-		if((boolean) request.getSession().getAttribute("user_admin")) {
+		if ((boolean) request.getSession().getAttribute("user_admin")) {
 			System.out.println("je suis admin");
 			return new ModelAndView("redirect:/admin/liste-utilisateurs");
 		}

@@ -31,8 +31,11 @@ public class LoginController {
 	}
 
 	@RequestMapping("/authenticate")
-	public ModelAndView showLogin(@RequestParam(name = "contact", required = false) boolean contact) {
+	public ModelAndView showLogin(@RequestParam(name = "contact", required = false) boolean contact,
+			@RequestParam(name = "sessionExpiree", required = false) boolean sessionExpiree) {
 		Map<String, Object> model = new HashMap<String, Object>();
+		
+		
 		LoginForm lf = new LoginForm("", "", contact);
 		model.put("login-form", lf);
 		return new ModelAndView("login", model);
@@ -50,6 +53,7 @@ public class LoginController {
 
 		try {
 			u = utilisateurDao.findByEmail(form.getUsername());
+			model.addAttribute("user_id", u.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("msg", "Erreur d'accès à la base de données");
@@ -65,6 +69,9 @@ public class LoginController {
 			request.getSession().setAttribute("user_admin", u.isAdmin());
 			request.getSession().setAttribute("user_client", u.isClient());
 			request.getSession().setAttribute("user_artisan", u.isArtisan());
+			
+			model.addAttribute("user_id", u.getId());
+				
 			if (u.isArtisan()) {
 				request.getSession().setAttribute("societeId", u.getMaSociete().getId());
 			}
