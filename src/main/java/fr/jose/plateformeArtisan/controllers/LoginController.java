@@ -1,5 +1,6 @@
 package fr.jose.plateformeArtisan.controllers;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,15 +51,21 @@ public class LoginController {
 			return "login";
 		}
 		Utilisateur u;
+		String msg = null;
 
 		try {
 			u = utilisateurDao.findByEmail(form.getUsername());
 			model.addAttribute("user_id", u.getId());
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			msg = "Le login ou le mot de passe est incorrect";
+			model.addAttribute("msg", msg);
+			return "login";
+
+		}catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("msg", "Erreur d'accès à la base de données");
 			return "pageErreurs";
-
 		}
 
 		if (u != null && u.getMdp().equals(form.getMdp())) {
@@ -77,6 +84,8 @@ public class LoginController {
 			}
 
 			if (u.isAdmin()) {
+				//réglage de la session pour l'admin à 1 heure
+				request.getSession().setMaxInactiveInterval(60*60);
 				return "redirect:/admin/dashboard";
 			}
 
@@ -85,7 +94,8 @@ public class LoginController {
 			} else if (u.isClient()) {
 				return "redirect:/client/accueil";
 			} else if (u.isArtisan()) {
-				request.getSession().setMaxInactiveInterval(60);
+				//réglage de la furée de la session artisan à 30 minutes
+				request.getSession().setMaxInactiveInterval(30*60);
 				return "redirect:/artisan/ma-societe?id=" + u.getMaSociete().getId();
 			}
 

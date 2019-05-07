@@ -36,10 +36,27 @@
 		<br>
 		<br>
 	</c:if>
+	
+	<c:if test="${msg != null }">
+		<div id="messageSessionExpiree"
+			class="alert alert-block alert-danger col-lg-10 col-lg-offset-1"
+			style="text-align: center; display: none; ">
+			<h1>
+				<c:out value="${msg }"></c:out>
+			</h1>
+			<h2>Merci de vérifier vos identifiants</h2>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+	</c:if>
+	
 
 	<div>
 		<div class="div-titre-h1"
-			style="margin-top: 100px; margin-bottom: 100px;">
+			style="margin-top: 160px; margin-bottom: 100px;">
 			<h1 class="titre-h1">Authentification</h1>
 		</div>
 
@@ -131,7 +148,7 @@
 		});
 
 		$(function() {
-			$("#messageSessionExpiree").show("slow");
+			$("#messageSessionExpiree").delay(1000).slideDown(2000);
 
 		});
 

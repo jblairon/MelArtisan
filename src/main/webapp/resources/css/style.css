@@ -22,6 +22,10 @@
 .div-alert {
 	width: 70%;
 }
+.div-alert-signup {
+	margin-left: 60px;
+	display: none;
+}
 
 /* ========================================= */
 /* ****** Pour la page de contact
@@ -507,6 +511,10 @@ nav a:hover {
 .modifier-coordonnees {
 	margin: auto;
 	width: 70%;
+}
+
+.form-element-signup {
+	background-color: #4B610B;
 }
 
 .login {
