@@ -44,7 +44,7 @@ public class SignupController {
 	public ModelAndView signup(HttpServletRequest request) {
 		Map<String, Object> model = new HashMap<>();
 		// récupération de l'objet SignUpForm
-		SignUpForm form = new SignUpForm("", "", "Monsieur", "", "", "01/01/1970");
+		SignUpForm form = new SignUpForm("", "", "Monsieur", "", "", "");
 		model.put("signup-form", form);
 
 		if(request.getSession().getAttribute("user_admin")!=null && (boolean) request.getSession().getAttribute("user_admin")) {
@@ -81,7 +81,7 @@ public class SignupController {
 		u.setMdp(form.getMdp());
 		u.setGenre(Enum.valueOf(Genre.class, form.getGenre()));
 		
-		if((boolean) request.getSession().getAttribute("user_admin")) {
+		if(request.getSession().getAttribute("user_admin") != null && (boolean) request.getSession().getAttribute("user_admin")) {
 			u.setAdmin(form.isAdmin());
 			u.setArtisan(form.isArtisan());
 			u.setClient(form.isClient());
@@ -118,6 +118,7 @@ public class SignupController {
 		String msgMail = null;
 		try {
 			utilisateurDao.save(u);
+			request.getSession().setAttribute("user_id", u.getId());
 			if(form.isArtisan()) {
 				Societe s = societeDao.findById(form.getSocieteId());
 				s.setUtilisateur(u);
@@ -133,12 +134,12 @@ public class SignupController {
 			return new ModelAndView("signup", model);
 		}
 		
-		if((boolean) request.getSession().getAttribute("user_admin")) {
+		if(request.getSession().getAttribute("user_admin") != null && (boolean) request.getSession().getAttribute("user_admin")) {
 			return new ModelAndView("redirect:admin/liste-utilisateurs", model);
 		}
 
 
-		return new ModelAndView("redirect:client/accueil", model);
+		return new ModelAndView("redirect:authenticate", model);
 	}
 
 }

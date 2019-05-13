@@ -86,6 +86,10 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 	
+	<bean id="PromotionDao" class="fr.jose.plateformeArtisan.dao.PromotionDao">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+	
 	<bean id="HoraireDao" class="fr.jose.plateformeArtisan.dao.HoraireDao">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>

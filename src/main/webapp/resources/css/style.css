@@ -10,10 +10,23 @@
 	background-attachment: fixed;
 	margin-top: 50px;
 }
+#mytable {
+	text-align: center;
+}
+
+#mytable th {
+	font-size: 1.7em;
+	color: #04B431;
+}
+#mytable td {
+	font-size: 1.4em;
+	
+}
 
 .card-title {
 	font-size: 10px;
 }
+
 #liste {
 	display: inline;
 	width: 100px;
@@ -22,6 +35,7 @@
 .div-alert {
 	width: 70%;
 }
+
 .div-alert-signup {
 	margin-left: 60px;
 	display: none;
@@ -36,7 +50,6 @@
 	margin-top: 50px;
 	margin-bottom: 200px;
 }
-
 
 .contact {
 	font-size: 15px;
@@ -65,12 +78,12 @@
 
 .div-favoris {
 	width: 1100px;
-	/* 	float: right; */
+/* 	float: left; */
 	height: 200px;
 	padding-left: 500px;
-	padding-top: 50px;
+	padding-top: 20px;
 	background-color: #000000;
-	font-size: 30px;
+	font-size: 20px;
 	padding-bottom: 20px;
 }
 
@@ -86,7 +99,7 @@
 }
 
 .image-favoris {
-	height: 50px;
+	height: 30px;
 	margin-right: 50px;
 }
 
@@ -114,6 +127,50 @@
 	line-height: 200%;
 	font-weight: bold;
 }
+
+/* ======================================== */
+/*	Début promotions
+/* ======================================== */
+
+.promotions {
+	width: 300px;
+	margin-left: 200px;
+	text-align: center;
+	margin-top: 20px;
+	font-size: 50px;
+	border-radius: 15px;
+	box-shadow: 0px 0px 10px #4183C4;
+	/*on affecte l'animation clignote à notre bouton*/
+	-webkit-animation-name: clignote-promotions;
+	/*on définit la durée de l'animation à 1s*/
+	-webkit-animation-duration: 1s;
+	/*on dit que l'animation se répétera à l'infini.*/
+	-webkit-animation-iteration-count: infinite;
+}
+
+.promotions a {
+	color : red;
+	text-decoration: none; 
+}
+
+/* On crée l'animation */
+
+@-webkit-keyframes clignote-promotions { 0%{
+	box-shadow: 0px 0px 0px #EDFB08;
+}
+
+50%{ box-shadow : 0px 0px 50px #EDFB08;
+}
+
+100%{
+	box-shadow : 0px 0px 0px #EDFB08;
+
+}
+}
+/* ======================================== */
+/*	Fin promotions
+/* ======================================== */
+
 
 .client-h1 {
 	color: #FFFFFF;
@@ -202,10 +259,10 @@
 	font-weight: bold;
 	text-align: center;
 }
+
 .div-class-display-none {
 	display: none;
 }
-
 
 .page-detail article {
 	font-size: 15px;
@@ -375,12 +432,56 @@ image-3 {
 }
 
 .messageMail {
-	font-size: 15px;
+	margin-left: 80px;
 	font-weight: bold;
-	width: 550px;
-	height: 50px;
+	width: 1000px;
+	height: 80px;
+	text-align: center;
+	margin-bottom: 50px;
+	margin-top: 50px;
+	box-shadow: 0px 0px 10px #4183C4;
+	/*on affecte l'animation clignote à notre bouton*/
+	-webkit-animation-name: clignote;
+	/*on définit la durée de l'animation à 1s*/
+	-webkit-animation-duration: 1s;
+	/*on dit que l'animation se répétera à l'infini.*/
+	-webkit-animation-iteration-count: infinite;
+}
+/* On crée l'animation */
+@
+-webkit-keyframes clignote { 0%{
+	box-shadow: 0px 0px 30px #D61111;
 }
 
+50%{
+box-shadow
+:
+0px
+ 
+0
+px
+ 
+0
+px
+ 
+#D61111
+;
+}
+100%{
+box-shadow
+:
+0px
+ 
+0
+px
+ 
+30
+px
+ 
+#D61111
+;
+}
+}
 nav li {
 	font-size: 12px;
 	width: 150px;
@@ -406,7 +507,7 @@ nav li {
 .titre-legend-signup {
 	color: #105F65;
 	font-size: 24px;
-/* 	margin-left: 200px; */
+	/* 	margin-left: 200px; */
 	margin-top: 20px;
 }
 
@@ -503,6 +604,11 @@ nav a:hover {
 	margin-top: 30px;
 }
 
+.form-element-artisan-vacances textarea input{
+	color: #000000;
+	font-size: 1.5em;
+}
+
 .dates-vacances {
 	margin-left: 20px;
 	background-color: #245B7D;
@@ -515,6 +621,17 @@ nav a:hover {
 
 .form-element-signup {
 	background-color: #4B610B;
+	margin-left: 60px;
+}
+
+.form-element-signup input {
+	height: 40px;
+	font-size: 20px;
+}
+
+.form-element-signup select {
+	height: 40px;
+	font-size: 20px;
 }
 
 .login {
@@ -522,6 +639,7 @@ nav a:hover {
 	margin-left: 0px;
 	width: 70%;
 }
+
 .form-login {
 	width: 545px;
 	margin: 0px;
@@ -542,6 +660,7 @@ nav a:hover {
 	padding-bottom: 200px;
 	padding-top: 50px;
 }
+
 .form-element-admin {
 	width: 60%;
 	margin-left: 250px;
@@ -612,13 +731,12 @@ form select {
 
 .container-admin {
 	background-color: #aaaaaa;
-	background-attachment:fixed;
+	background-attachment: fixed;
 	height: auto;
 	margin-left: -100px;
 	padding-left: 200px;
 	margin-top: 50px;
 	padding-bottom: 500px;
-	 
 }
 
 .checkbox-profil {
@@ -651,26 +769,25 @@ footer {
 }
 
 /* boutons */
-
 .bouton5 {
 	width: 200px;
 	margin-bottom: 20px;
-	border-radius:12px 0 12px 0;
+	border-radius: 12px 0 12px 0;
 	background: #d34836;
-	border:none;
-	color:#fff;
-	font:bold 12px Verdana;
-	padding:6px 0 6px 0;
+	border: none;
+	color: #fff;
+	font: bold 12px Verdana;
+	padding: 6px 0 6px 0;
 }
 
 .bouton6 {
 	width: 200px;
-	border-radius:12px 0 12px 0;
+	border-radius: 12px 0 12px 0;
 	background: #478bf9;
-	border:none;
-	color:#fff;
-	font:bold 12px Verdana;
-	padding:6px 0 6px 0;
+	border: none;
+	color: #fff;
+	font: bold 12px Verdana;
+	padding: 6px 0 6px 0;
 }
 
 .bouton14 {
@@ -689,13 +806,16 @@ footer {
 	margin-bottom: 800px;
 	text-align: center;
 }
+
 h1 {
 	font-size: 50px;
 	font-weight: bold;
 }
+
 h2 {
 	font-size: 32px;
 }
+
 h3 {
 	font-size: 25px;
 }

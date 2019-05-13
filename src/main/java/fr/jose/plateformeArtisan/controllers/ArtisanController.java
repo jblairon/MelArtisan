@@ -21,9 +21,11 @@ import org.springframework.web.servlet.ModelAndView;
 import fr.jose.plateformeArtisan.beans.Horaire;
 import fr.jose.plateformeArtisan.beans.Societe;
 import fr.jose.plateformeArtisan.beans.SocieteDateVacances;
+import fr.jose.plateformeArtisan.beans.Utilisateur;
 import fr.jose.plateformeArtisan.dao.HoraireDao;
 import fr.jose.plateformeArtisan.dao.SocieteDao;
 import fr.jose.plateformeArtisan.dao.SocieteDateVacancesDao;
+import fr.jose.plateformeArtisan.dao.UtilisateurDao;
 import fr.jose.plateformeArtisan.formbeans.ContactForm;
 import fr.jose.plateformeArtisan.formbeans.HorairesForm;
 import fr.jose.plateformeArtisan.formbeans.SocieteDateVacancesForm;
@@ -42,6 +44,9 @@ public class ArtisanController {
 	
 	@Autowired
 	private SocieteDateVacancesDao societeDateVacancesDao;
+	
+	@Autowired
+	private UtilisateurDao utilisateurDao;
 
 	@Transactional
 	@RequestMapping(value = "/artisan/societe/mes-horaires", method = RequestMethod.GET)
@@ -151,10 +156,10 @@ public class ArtisanController {
 		SocieteDateVacancesForm form = new SocieteDateVacancesForm();
 		
 		Societe s = societeDao.findById(id);
-		if(s.getSocieteDateVacances()!= null) {
-			form.setDateDebut(DateUtils.stringSqlToLocalDate_FR(s.getSocieteDateVacances().getDateDebut().toString()));
-			form.setDateFin(DateUtils.stringSqlToLocalDate_FR(s.getSocieteDateVacances().getDateFin().toString()));
-			form.setRaison(s.getSocieteDateVacances().getRaison());
+		if(s.getSocietedatevacances()!= null) {
+			form.setDateDebut(DateUtils.stringSqlToLocalDate_FR(s.getSocietedatevacances().getDateDebut().toString()));
+			form.setDateFin(DateUtils.stringSqlToLocalDate_FR(s.getSocietedatevacances().getDateFin().toString()));
+			form.setRaison(s.getSocietedatevacances().getRaison());
 		}
 
 		model.put("vacances-form", form);
@@ -185,12 +190,12 @@ public class ArtisanController {
 		SocieteDateVacances sdv = null;
 		Societe s = societeDao.findById((long) request.getSession().getAttribute("societeId"));
 		boolean sauv = false;
-		if(s.getSocieteDateVacances()== null) {
+		if(s.getSocietedatevacances()== null) {
 			sdv = new SocieteDateVacances();
 			sauv = true;
 		}
 		else {
-			 sdv = societeDateVacancesDao.findById(s.getSocieteDateVacances().getId());
+			 sdv = societeDateVacancesDao.findById(s.getSocietedatevacances().getId());
 		}
 		sdv.setDateDebut(DateUtils.stringToSqlDate(form.getDateDebut()));
 		sdv.setDateFin(DateUtils.stringToSqlDate(form.getDateFin()));
@@ -202,7 +207,7 @@ public class ArtisanController {
 			sdv.setSociete(s);
 			if(sauv) {
 				societeDateVacancesDao.save(sdv);
-				s.setSocieteDateVacances(sdv);
+				s.setSocietedatevacances(sdv);
 				societeDao.update(s);
 			}
 			else
@@ -282,5 +287,9 @@ public class ArtisanController {
 		return "redirect:/client/accueil";
 
 	}
+	/*
+	 * Partie consacrée aux promotions */
+	
+
 	
 }

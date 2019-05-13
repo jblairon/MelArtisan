@@ -4,6 +4,9 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+<link rel="stylesheet" href="resources/css/style_fenetre_modal.css"
+	type="text/css" />
+
 <style>
 .image-entete {
 	width: 100%;
@@ -14,17 +17,28 @@
 }
 </style>
 
+<!-- Pour la fenêtre modal des promotions -->
+<div id="fond" style="margin-left: -500px; margin-top: -30px;"></div>
 
+<!-- 	<script src="/resources/js/fenetre_modal.js" type="text/javascript"></script> -->
+<div id="modal" class="popup">
+
+	<a href="artisan/promotion/creation-promotion?id=${societeId}">Nouvelle promotion</a>
+</div>
 
 <div class="container container-detail-client"
-	style="background-color: #D0D5DC; margin-top: -10px; height: auto; padding-bottom: 300px;">
+	style="background-color: #D0D5DC; margin-top: -50px; height: auto; padding-bottom: 300px;">
 
-	<header>
-		<div class="div-image-entete">
-			<img class="image-entete"
-				src="<c:url value="/resources/images/societes/background/${societe.images[0].nom}"/>" />
-		</div>
-	</header>
+
+
+	<!-- 	<header> -->
+	<div class="div-image-entete">
+		<img class="image-entete"
+			src="<c:url value="/resources/images/societes/background/${societe.images[0].nom}"/>" />
+	</div>
+	<!-- 	</header> -->
+
+
 
 	<div class="div-titre-h1-detail">
 		<h1 class="titre-h1-detail">
@@ -53,15 +67,7 @@
 				<c:out value="${moyenne }/5 pour ${societe.notes.size() } avi(s)"></c:out>
 			</p>
 
-			<div id='A1' class="etoiles">
-				<script type='text/javascript'>
-					var id = document.getElementById("id").value;
-					CreateListeEtoile('A1', 5, id);
-				</script>
 
-				<div id="bouton-lien" style="float: right"></div>
-
-			</div>
 		</div>
 		<div class="div-favoris">
 			<a class="ajouter-aux-favoris"
@@ -76,6 +82,9 @@
 				alt="mes favoris" title="Mes favoris" />Mes favoris
 
 			</a><br>
+			<div class="promotions">
+				<a href="#" id="show">Promotions</a>
+			</div>
 
 		</div>
 		<c:if test="${msgFavori !=null }">
@@ -87,6 +96,11 @@
 		</c:if>
 
 	</div>
+
+
+
+
+
 
 
 	<div class="row">
@@ -152,7 +166,8 @@
 
 		</div>
 		<div class="div-image-detail image-2">
-			<img style="height:500px; "class="image-detail img-2" alt="${societe.images[3].libelle }"
+			<img style="height: 500px;" class="image-detail img-2"
+				alt="${societe.images[3].libelle }"
 				src="<c:url value="/resources/images/societes/page/${societe.images[3].nom}"/>" />
 			<p class="message-vacances sous-image">${messageVacances }</p>
 		</div>
@@ -182,3 +197,79 @@
 	</div>
 
 </div>
+
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+
+$(document).ready(function() {
+
+	// Lorsque l'on clique sur show on affiche la fenêtre modale
+	$('#show').click(function(e) {
+		// On désactive le comportement du lien
+		e.preventDefault();
+		showModal();
+	});
+
+	// Lorsque l'on clique sur le fond on cache la fenetre modale
+	$('#fond').click(function() {
+		hideModal();
+	});
+
+	// Lorsque l'on modifie la taille du navigateur la taille du fond change
+	$(window).resize(function() {
+		resizeModal()
+	});
+
+}); // fin doc ready
+
+function showModal() {
+	var id = '#modal';
+// 	$(id).html('Voici ma fenetre modale<br/><a href="#" class="close">Fermer la fenetre</a>');
+			
+					
+
+	// On definit la taille de la fenetre modale
+	resizeModal();
+
+	// Effet de transition
+	$('#fond').fadeIn(1000);
+	$('#fond').fadeTo("slow", 0.8);
+	// Effet de transition
+	$(id).fadeIn(2000);
+
+	$('.popup .close').click(function(e) {
+		// On désactive le comportement du lien
+		e.preventDefault();
+		// On cache la fenetre modale
+		hideModal();
+	});
+}
+
+function hideModal() {
+	// On cache le fond et la fenêtre modale
+	$('#fond, .popup').hide();
+// 	$('.popup').html('');
+}
+
+function resizeModal(){
+	   var modal = $('#modal');
+	   // On récupère la largeur de l'écran et la hauteur de la page afin de
+		// cacher la totalité de l'écran
+	   var winH = $(window).height();
+	   var winW = $(window).width();
+	   
+	   // le fond aura la taille de l'écran
+// 	   $('#fond').css({'width':winW,'height':winH});
+	   $('#fond').css({'width':winW,'height':3000});
+	   
+	   // On récupère la hauteur et la largeur de l'écran
+	   var winH = $(window).height();
+	   // On met la fenêtre modale au centre de l'écran
+	   modal.css('top', winH/2 - modal.height()/2);
+	   modal.css('left', winW/2 - modal.width()/2);
+	}
+
+</script>

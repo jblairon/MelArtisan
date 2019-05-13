@@ -65,12 +65,11 @@ public class Societe implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "contact_id")
 	private Contact contact;
-	
+
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "societedatevacances_id")
 	private SocieteDateVacances societedatevacances;
-	
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "utilisateur_id")
 	private Utilisateur utilisateur;
@@ -93,6 +92,10 @@ public class Societe implements Serializable {
 	@JoinTable(name = "societe_horaires", joinColumns = { @JoinColumn(name = "societe_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "horaire_id") })
 	private List<Horaire> horaires;
+
+	// bi-directional many-to-one association to promotion
+	@OneToMany(mappedBy = "societe", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Promotion> promotions;
 
 	private boolean amCloseToDay;
 	private boolean pmCloseToDay;
@@ -173,12 +176,12 @@ public class Societe implements Serializable {
 		this.contact = contact;
 	}
 
-	public SocieteDateVacances getSocieteDateVacances() {
+	public SocieteDateVacances getSocietedatevacances() {
 		return societedatevacances;
 	}
 
-	public void setSocieteDateVacances(SocieteDateVacances societeDateVacances) {
-		this.societedatevacances = societeDateVacances;
+	public void setSocietedatevacances(SocieteDateVacances societedatevacances) {
+		this.societedatevacances = societedatevacances;
 	}
 
 	public Utilisateur getUtilisateur() {
@@ -219,6 +222,14 @@ public class Societe implements Serializable {
 
 	public void setHoraires(List<Horaire> horaires) {
 		this.horaires = horaires;
+	}
+
+	public List<Promotion> getPromotions() {
+		return promotions;
+	}
+
+	public void setPromotions(List<Promotion> promotions) {
+		this.promotions = promotions;
 	}
 
 	public boolean isAmCloseToDay() {
@@ -268,6 +279,7 @@ public class Societe implements Serializable {
 		result = prime * result + ((notes == null) ? 0 : notes.hashCode());
 		result = prime * result + (pmCloseToDay ? 1231 : 1237);
 		result = prime * result + ((prestations == null) ? 0 : prestations.hashCode());
+		result = prime * result + ((promotions == null) ? 0 : promotions.hashCode());
 		result = prime * result + ((societedatevacances == null) ? 0 : societedatevacances.hashCode());
 		result = prime * result + ((tel == null) ? 0 : tel.hashCode());
 		result = prime * result + ((utilisateur == null) ? 0 : utilisateur.hashCode());
@@ -349,6 +361,11 @@ public class Societe implements Serializable {
 				return false;
 		} else if (!prestations.equals(other.prestations))
 			return false;
+		if (promotions == null) {
+			if (other.promotions != null)
+				return false;
+		} else if (!promotions.equals(other.promotions))
+			return false;
 		if (societedatevacances == null) {
 			if (other.societedatevacances != null)
 				return false;
@@ -371,11 +388,11 @@ public class Societe implements Serializable {
 	public String toString() {
 		return "Societe [id=" + id + ", nom=" + nom + ", description=" + description + ", tel=" + tel + ", email="
 				+ email + ", adresse=" + adresse + ", categorie=" + categorie + ", images=" + images + ", contact="
-				+ contact + ", societeDateVacances=" + societedatevacances + ", utilisateur=" + utilisateur
+				+ contact + ", societedatevacances=" + societedatevacances + ", utilisateur=" + utilisateur
 				+ ", dateCreation=" + dateCreation + ", metiers=" + metiers + ", prestations=" + prestations
-				+ ", horaires=" + horaires + ", amCloseToDay=" + amCloseToDay + ", pmCloseToDay=" + pmCloseToDay
-				+ ", notes=" + notes + "]";
+				+ ", horaires=" + horaires + ", promotions=" + promotions + ", amCloseToDay=" + amCloseToDay
+				+ ", pmCloseToDay=" + pmCloseToDay + ", notes=" + notes + "]";
 	}
 
-				
+	
 }

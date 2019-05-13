@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+#fond {
+	position: absolute;
+	z-index: 9000;
+	background-color: #000;
+	display: none;
+	border-radius: 10px;
+}
+
+.popup {
+	position: fixed;
+	width: 1000px;
+	height: 1000px;
+	display: none;
+	z-index: 9999;
+	padding: 20px;
+	border-radius: 10px;
+	background-color: white;
+	border: 1px solid grey;
+}
+
+#modal {
+	width: 800px;
+	height: 800px;
+}

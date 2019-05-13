@@ -809,8 +809,8 @@ public class SocieteController {
 			}
 
 			// pour le message des prochaines vacances
-			if (societe.getSocieteDateVacances() != null) {
-				messageVacances = SocieteServices.messageProchainesVacances(societe.getSocieteDateVacances());
+			if (societe.getSocietedatevacances() != null) {
+				messageVacances = SocieteServices.messageProchainesVacances(societe.getSocietedatevacances());
 				model.put("messageVacances", messageVacances);
 				if (messageVacances.contains("!!!")) {
 					divClassVacances = "alert alert-warning";

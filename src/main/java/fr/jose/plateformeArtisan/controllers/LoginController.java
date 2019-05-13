@@ -100,7 +100,7 @@ public class LoginController {
 			}
 
 			else
-				return "redirect:/client/account";
+				return "redirect:/client/accueil";
 		} else {
 			model.addAttribute("login-form", form);
 			model.addAttribute("msg", "Erreur : incorrect email et/ou mot de passe incorrecte !");
