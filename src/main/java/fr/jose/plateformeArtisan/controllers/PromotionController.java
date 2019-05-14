@@ -48,10 +48,16 @@ public class PromotionController {
 	@RequestMapping(value = { "/artisan/societe/mes-promotions",
 			"/admin/societe/mes-promotions" }, method = RequestMethod.GET)
 	public String societePromotions(HttpServletRequest request,
-			@RequestParam(name = "id", required = true) long societeId, Model model) {
+			@RequestParam(name = "id", required = true) long societeId, Model model) throws Exception {
 
 		Utilisateur u = new Utilisateur();
-		u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+		try {
+			u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+		}catch (NullPointerException np) {
+			String messageSessionExpiree = "Nous avons rencontré un problème lors de l'accès aux données";
+			model.addAttribute("messageSessionExpiree", messageSessionExpiree);
+			return "login";
+		}
 
 		if (societeId != 0) { // c'est une modification de société
 			Societe s = societeDao.findById(societeId);
@@ -91,8 +97,10 @@ public class PromotionController {
 			@RequestParam(name = "id", required = true) Long societeId) {
 		Map<String, Object> model = new HashMap<>();
 
+		Societe societe = societeDao.findById(societeId);
 		PromotionForm form = new PromotionForm();
 		form.setSocieteId(societeId);
+		model.put("societe", societe);
 		model.put("promotionForm", form);
 
 		return new ModelAndView("artisan/creerPromotion", model);

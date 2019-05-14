@@ -35,7 +35,8 @@ fieldset {
 		<div class="col-lg-12" style="margin: auto">
 
 			<div class="div-titre-h1 div-titre-h1-artisan  col-lg-offset-5">
-				<h1 class="titre-h1 titre-h1-artisan">Modification d'une promotion</h1>
+				<h1 class="titre-h1 titre-h1-artisan">Modification d'une
+					promotion</h1>
 			</div>
 
 		</div>
@@ -49,7 +50,8 @@ fieldset {
 
 				<form:hidden path="promotionId" />
 
-				<div class="dates-vacances col-lg-12" style="padding-top: 50px; padding-bottom: 50px;">
+				<div class="dates-vacances col-lg-12"
+					style="padding-top: 50px; padding-bottom: 50px;">
 					<div class="form-group col-lg-5 col-lg-offset-2">
 
 						<div
@@ -97,6 +99,17 @@ fieldset {
 							style="height: 40px; font-size: 20px; margin-top: 30px;" />
 					</div>
 
+				</div>
+				<!--  pour uploader une image représentant la promotion -->
+				<div class="upload">
+
+					<form method="POST" action="uploadFile"
+						enctype="multipart/form-data">
+						File to upload: <input type="file" name="file"><br />
+						Name: <input type="text" name="name"><br /> <br /> <input
+							type="submit" value="Upload"> Press here to upload the
+						file!
+					</form>
 				</div>
 
 

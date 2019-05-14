@@ -152,6 +152,30 @@
 	color : red;
 	text-decoration: none; 
 }
+.promotion {
+	text-align: center;
+	margin: auto;
+	padding-top: 50px;
+	width: 200px;
+	height: 200px;
+	border-radius: 100px;
+	background-color: yellow;
+	margin-bottom: 50px;
+
+}
+.promotion h1 {
+	color: red;
+	text-align: center;
+	margin-top: 10px;
+}
+.promotion-h2-h3 {
+	text-align: center;
+}
+.promotion-h2 {
+	color: #01DF3A;
+	font-weight: bold;
+}
+	
 
 /* On crée l'animation */
 

@@ -15,6 +15,10 @@
 .div-image-entete {
 	width: 100%;
 }
+.fixer-container {
+	position: fixed;
+}
+
 </style>
 
 <!-- Pour la fenêtre modal des promotions -->
@@ -23,10 +27,41 @@
 <!-- 	<script src="/resources/js/fenetre_modal.js" type="text/javascript"></script> -->
 <div id="modal" class="popup">
 
-	<a href="artisan/promotion/creation-promotion?id=${societeId}">Nouvelle promotion</a>
+	<a href="artisan/promotion/creation-promotion?id=${societeId}">Nouvelle
+		promotion</a>
+	<c:forEach var="promo" items="${societe.promotions}">
+		<fmt:parseDate value="${promo.dateDebut }" pattern="yyyy-MM-dd"
+			var="parseDateDebut" type="both"></fmt:parseDate>
+		<fmt:parseDate value="${promo.dateFin }" pattern="yyyy-MM-dd"
+			var="parseDateFin" type="both"></fmt:parseDate>
+		
+		<div class="promotion">
+			<h1>- 
+				<c:choose>
+					<c:when test="${promo.tauxReduction > 0 }">
+						<fmt:formatNumber  type="percent" pattern="##"  value="${promo.tauxReduction }"></fmt:formatNumber> %
+					</c:when>
+					<c:otherwise>
+						<c:out value="${promo.remise }" /> €
+					</c:otherwise>
+				</c:choose>
+			 </h1>
+		</div>
+
+		<h2 class="promotion-h2-h3 promotion-h2">
+			Du
+			<fmt:formatDate value="${parseDateDebut }" pattern="dd/MM/yyyy" />
+			au
+			<fmt:formatDate value="${parseDateFin }" pattern="dd/MM/yyyy" />
+		</h2>
+		<h3 class="promotion-h2-h3">
+			<c:out value="${promo.description }"></c:out>
+		</h3>
+
+	</c:forEach>
 </div>
 
-<div class="container container-detail-client"
+<div id="contenu" class="container container-detail-client"
 	style="background-color: #D0D5DC; margin-top: -50px; height: auto; padding-bottom: 300px;">
 
 
@@ -209,6 +244,7 @@ $(document).ready(function() {
 	// Lorsque l'on clique sur show on affiche la fenêtre modale
 	$('#show').click(function(e) {
 		// On désactive le comportement du lien
+		$("#contenu").addClass("fixer-container");
 		e.preventDefault();
 		showModal();
 	});
