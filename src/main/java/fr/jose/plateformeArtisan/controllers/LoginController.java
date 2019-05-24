@@ -1,6 +1,5 @@
 package fr.jose.plateformeArtisan.controllers;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.jose.plateformeArtisan.beans.Societe;
 import fr.jose.plateformeArtisan.beans.Utilisateur;
+import fr.jose.plateformeArtisan.dao.SocieteDao;
 import fr.jose.plateformeArtisan.dao.UtilisateurDao;
 import fr.jose.plateformeArtisan.formbeans.LoginForm;
 
@@ -26,6 +27,9 @@ public class LoginController {
 
 	@Autowired
 	private UtilisateurDao utilisateurDao;
+	
+	@Autowired
+	private SocieteDao societeDao;
 
 	public void setUtilisateurDao(UtilisateurDao utilisateurDao) {
 		this.utilisateurDao = utilisateurDao;
@@ -81,6 +85,8 @@ public class LoginController {
 				
 			if (u.isArtisan()) {
 				request.getSession().setAttribute("societeId", u.getMaSociete().getId());
+				Societe s = societeDao.findById(u.getMaSociete().getId());
+				model.addAttribute("societe", s);
 			}
 
 			if (u.isAdmin()) {

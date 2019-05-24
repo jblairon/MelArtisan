@@ -1,6 +1,5 @@
 package fr.jose.plateformeArtisan.controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,17 +18,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.jose.plateformeArtisan.beans.Categorie;
-import fr.jose.plateformeArtisan.beans.Metier;
 import fr.jose.plateformeArtisan.beans.Promotion;
 import fr.jose.plateformeArtisan.beans.Societe;
 import fr.jose.plateformeArtisan.beans.Utilisateur;
 import fr.jose.plateformeArtisan.dao.PromotionDao;
 import fr.jose.plateformeArtisan.dao.SocieteDao;
 import fr.jose.plateformeArtisan.dao.UtilisateurDao;
-import fr.jose.plateformeArtisan.formbeans.CreationCategorieForm;
 import fr.jose.plateformeArtisan.formbeans.PromotionForm;
 import fr.jose.plateformeArtisan.tools.DateUtils;
+import fr.jose.plateformeArtisan.tools.EmailTools;
 import fr.jose.plateformeArtisan.tools.FormatImageName;
 
 @Controller
@@ -160,20 +157,26 @@ public class PromotionController {
 	// modifier une promotion
 	@RequestMapping(value = { "/admin/promotion/modifier-promotion", "/artisan/promotion/modifier-promotion" })
 	public ModelAndView modifierCategorie(HttpServletRequest request,
-			@RequestParam(name = "id", required = true) long id) {
+			@RequestParam(name = "promo_id", required = true) long promo_id,
+			@RequestParam(name = "messageUpload", required = false) String messageUpload) {
 		Map<String, Object> model = new HashMap<>();
 
 		Utilisateur u = new Utilisateur();
-		;
+		
+
 		if (request.getSession().getAttribute("user_id") != null) {
 			u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
 		}
+		
 
 		PromotionForm form = new PromotionForm();
-		form.setPromotionId(id);
+		form.setPromotionId(promo_id);
 
-		Promotion promo = new Promotion();
-		promo = promotionDao.findById(id);
+		Promotion promo = promotionDao.findById(promo_id);
+		System.out.println("l 175");
+
+		Societe s = societeDao.findById(promo.getSociete().getId());
+		model.put("societe", s);
 
 		form.setDateDebut(DateUtils.stringSqlToLocalDate_FR(promo.getDateDebut().toString()));
 		form.setDateFin(DateUtils.stringSqlToLocalDate_FR(promo.getDateFin().toString()));
@@ -181,6 +184,8 @@ public class PromotionController {
 		form.setPromotionId(promo.getId());
 		form.setRemise(promo.getRemise());
 		form.setTauxReduction(promo.getTauxReduction());
+		
+		request.setAttribute("promo_id", promo.getId());
 
 		model.put("promotion", promo);
 		model.put("promotionForm", form);
@@ -199,9 +204,10 @@ public class PromotionController {
 			throws java.text.ParseException {
 		Map<String, Object> model = new HashMap<>();
 
-		Utilisateur u = new Utilisateur();
+		Utilisateur u =null;
 		if (request.getSession().getAttribute("user_id") != null) {
-			utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+			u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+			System.out.println("email = " + u.getEmail());
 		}
 
 		if (result.hasErrors()) {
@@ -214,9 +220,17 @@ public class PromotionController {
 			return new ModelAndView("artisan/modificationPromotion", model);
 		}
 
-		System.out.println("description = " + form.getDescription());
 		Promotion promo = new Promotion();
 		promo = promotionDao.findById(form.getPromotionId());
+		
+		//Création du nom de l'image avec le libellé de la catétorie
+		Societe s = societeDao.findById(promo.getSociete().getId());
+		String nomImage = FormatImageName.removeAccents(promo.getSociete().getNom().toLowerCase().replaceAll("\\s", ""))
+				+"_promo_"+(s.getPromotions().size())+".png";
+
+		promo.setImage(nomImage);
+		System.out.println("image promo = " + promo.getImage());
+		
 
 		promo.setDescription(form.getDescription());
 		promo.setDateDebut(DateUtils.stringToSqlDate(form.getDateDebut()));
@@ -229,12 +243,20 @@ public class PromotionController {
 		if (form.getTauxReduction() > 0) {
 			promo.setTauxReduction(form.getTauxReduction());
 		}
+		
 
 		promotionDao.update(promo);
 
 		if (u.isAdmin()) {
 			return new ModelAndView("redirect:/admin/promotion/lister?id="+promo.getId());
 		}
+		// envoi d'un mail pour avertir l'admin d'un changement sur une société
+		String msgMail = u.getPrenom() + " " + u.getNom() + " a apporté une modification sur les promotions de la société " + s.getNom();
+		String subject = "Modification d'une promotion";
+		System.out.println("email = " + u.getEmail());
+		EmailTools.sendEmailToAdmin(u.getEmail(), subject, msgMail);
+		
+		
 		return new ModelAndView("redirect:/artisan/ma-societe?id=" + promo.getSociete().getId());
 
 	}

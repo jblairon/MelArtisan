@@ -22,6 +22,9 @@
 	content="width=device-width, initial-scale=1 shrink-to-fit=no ">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="resources/css/bootstrap.min.css" rel="stylesheet"
+	id="bootstrap-css" />
+
 <title>Les Artisans de Lille métropole</title>
 
 <base
@@ -37,9 +40,10 @@
 
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+	
+<!-- 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"> -->
+	
 <style>
-
-
 .copyright {
 	margin-top: 20px;
 }
@@ -80,7 +84,7 @@
 		<div class="container logo">
 			<a class="navbar-brand titre-menu"
 				href="artisan/ma-societe?id=${societe.id }">MelArtisans</a>
-				
+
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -90,9 +94,8 @@
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item active accueil"><a class="nav-link"
 						href="artisan/ma-societe?id=${societe.id }"><span
-							class="glyphicon glyphicon-home" ></span>&nbsp; Accueil
-								<span class="sr-only">(current)</span>
-					</a></li>
+							class="glyphicon glyphicon-home"></span>&nbsp; Accueil <span
+							class="sr-only">(current)</span> </a></li>
 				</ul>
 			</div>
 		</div>
@@ -104,27 +107,30 @@
 
 				<li class="nav-item" style="width: 200px"><a class="nav-link"
 					href="artisan/societe/mes-horaires?id=${societe.id }"><span
-						class="glyphicon glyphicon-time" style="font-size: 20px;"></span>&nbsp Modifier mes
-						horaires</a></li>
+						class="glyphicon glyphicon-time" style="font-size: 20px;"></span>&nbsp
+						Modifier mes horaires</a></li>
 
 				<li class="nav-item" style="width: 200px"><a class="nav-link"
 					href="artisan/societe/mes-prochaines-vacances?id=${societe.id }"><span
-						class="glyphicon glyphicon-calendar" style="font-size: 20px;"></span>&nbsp Mes prochaines vacances</a></li>
-						
+						class="glyphicon glyphicon-calendar" style="font-size: 20px;"></span>&nbsp
+						Mes prochaines vacances</a></li>
+
 				<li class="nav-item" style="width: 200px"><a class="nav-link"
 					href="artisan/societe/mes-promotions?id=${societe.id }"><span
-						class="glyphicon glyphicon-calendar" style="font-size: 20px;"></span>&nbsp Mes promotions</a></li>
-						
+						class="glyphicon glyphicon-calendar" style="font-size: 20px;"></span>&nbsp
+						Mes promotions</a></li>
+
 
 				<li class="nav-item"><a class="nav-link"
 					href="artisan/disconnect"><span
-						class="glyphicon glyphicon-log-out" style="font-size: 20px;"></span>&nbsp Déconnexion</a></li>
+						class="glyphicon glyphicon-log-out" style="font-size: 20px;"></span>&nbsp
+						Déconnexion</a></li>
 
 
 				<li class="nav-item" style="width: 200px;"><a class="nav-link"
 					href="artisan/contact?contact=false&id=0&user_id=${societe.id }"><span
-						class="glyphicon glyphicon-envelope" style="font-size: 20px;"></span>&nbsp Contacter
-						MelArtisan</a></li>
+						class="glyphicon glyphicon-envelope" style="font-size: 20px;"></span>&nbsp
+						Contacter MelArtisan</a></li>
 			</ul>
 		</div>
 	</nav>

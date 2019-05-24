@@ -30,7 +30,10 @@ public class PromotionDao {
 
 	@Transactional(readOnly = true)
 	public Promotion findById(long id) {
-		return hibernateTemplate.get(Promotion.class, id);
+		System.out.println("promo ========== =");
+		Promotion promotion =  hibernateTemplate.get(Promotion.class, id);
+		
+		return promotion;
 	}
 
 	@Transactional

@@ -30,6 +30,8 @@ public class EmailTools {
 //		String userName = "culture.eventsdawan@gmail.com";
 //		String password = "dawan2018";
 		
+		System.out.println("From = " + from);
+		
 		String userName = "culture.eventsdawan@gmail.com";
 		String password = "dawan2018";
 		

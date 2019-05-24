@@ -769,6 +769,7 @@ public class SocieteController {
 
 		try {
 			Societe societe = societeDao.findById(id);
+			System.out.println("image promo = " + societe.getPromotions().get(0).getImage());
 
 			// pour l'ajout dans les favoris
 			if (ajouteAuxFavoris != null) {

@@ -36,8 +36,8 @@
 							<td>${p.remise} €</td>
 							<td>${p.tauxReduction} %</td>
 
-							<td><a href="artisan/promotion/modifier-promotion?id=${p.id}">Modifier</a></td>
-							<td><a href="artisan/promotion/supprimer-promotion?id=${p.id}">Supprimer</a></td>
+							<td><a href="artisan/promotion/modifier-promotion?promo_id=${p.id}">Modifier</a></td>
+							<td><a href="artisan/promotion/supprimer-promotion?promo_id=${p.id}">Supprimer</a></td>
 						</tr>
 						
 						

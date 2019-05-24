@@ -24,6 +24,8 @@ public class Promotion implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
+	@Column(name="image")
+	private String image;
 
 	@Column(name = "description", nullable = false, length = 500)
 	private String description;
@@ -51,6 +53,14 @@ public class Promotion implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public String getDescription() {
@@ -113,6 +123,7 @@ public class Promotion implements Serializable {
 		result = prime * result + ((dateFin == null) ? 0 : dateFin.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((image == null) ? 0 : image.hashCode());
 		result = prime * result + Float.floatToIntBits(remise);
 		result = prime * result + ((societe == null) ? 0 : societe.hashCode());
 		result = prime * result + Float.floatToIntBits(tauxReduction);
@@ -145,6 +156,11 @@ public class Promotion implements Serializable {
 			return false;
 		if (id != other.id)
 			return false;
+		if (image == null) {
+			if (other.image != null)
+				return false;
+		} else if (!image.equals(other.image))
+			return false;
 		if (Float.floatToIntBits(remise) != Float.floatToIntBits(other.remise))
 			return false;
 		if (societe == null) {
@@ -159,9 +175,11 @@ public class Promotion implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Promotion [id=" + id + ", description=" + description + ", dateDebut=" + dateDebut + ", dateFin="
-				+ dateFin + ", remise=" + remise + ", tauxReduction=" + tauxReduction + ", societe=" + societe + "]";
+		return "Promotion [id=" + id + ", image=" + image + ", description=" + description + ", dateDebut=" + dateDebut
+				+ ", dateFin=" + dateFin + ", remise=" + remise + ", tauxReduction=" + tauxReduction + ", societe="
+				+ societe + "]";
 	}
 
 	
+				
 }

@@ -44,6 +44,40 @@ fieldset {
 
 		<div class="row col-lg-10 " style="height: auto; margin: auto;">
 
+			<input id="bouton-upload" type="button" value="Modifier l'image"
+				class="bouton5">
+
+			<div class="upload-file" id="upload" style="margin-bottom: 30px;">
+				<input id="bouton-masquer-upload" type="button" value="Masquer"
+					class="bouton6"><br>
+				<br>
+
+
+
+				<!-- Pour l'upload d'une image -->
+				<form method="POST" action="artisan/promotion/uploadFile?modificationPromotion=true"
+					enctype="multipart/form-data">
+
+					<input type="hidden" name="promo_id" value="${promo_id }" />
+
+					<div class="col-lg-12" style="background-color: #1F5B81; color: #ffffff;padding: 20px;">
+						<fieldset class=" col-lg-12" style="margin-left: 0px; ">
+						<legend class="titre-legend" style="color: #D5E3EC;">Choisir une image dans votre
+							ordinateur</legend>
+
+						Fichier à uploader: <input type="file" name="fichier" class="form-control" style="height: 40px;font-size: 12px;"><br />
+						 
+						<input type="submit" value="Upload" class="btn btn-primary btn-lg"> Cliquer ici pour uploader le fichier !
+							
+
+
+
+					</fieldset></div>
+				</form>
+			</div>
+
+			<!-- Fin upload -->
+
 			<form:form method="post"
 				action="artisan/promotion/sauvegarder-promotion"
 				modelAttribute="promotionForm">
@@ -78,6 +112,8 @@ fieldset {
 					</div>
 
 
+
+
 					<div
 						class="form-control form-element form-element-artisan-vacances"
 						style="width: 345px; float: left;">
@@ -100,27 +136,20 @@ fieldset {
 					</div>
 
 				</div>
-				<!--  pour uploader une image représentant la promotion -->
-				<div class="upload">
-
-					<form method="POST" action="uploadFile"
-						enctype="multipart/form-data">
-						File to upload: <input type="file" name="file"><br />
-						Name: <input type="text" name="name"><br /> <br /> <input
-							type="submit" value="Upload"> Press here to upload the
-						file!
-					</form>
-				</div>
-
-
-
-
-
-
-
-
 			</form:form>
 		</div>
+
+		<!--  pour uploader une image représentant la promotion -->
+		<div class="upload">
+
+			<form method="POST" action="uploadFile" enctype="multipart/form-data">
+				File to upload: <input type="file" name="file"><br /> Name:
+				<input type="text" name="name"><br /> <br /> <input
+					type="submit" value="Upload"> Press here to upload the
+				file!
+			</form>
+		</div>
+
 	</div>
 </div>
 
@@ -183,6 +212,16 @@ fieldset {
 					weekHeader : 'Sem.',
 					dateFormat : 'dd/mm/yy'
 				});
+
+		$("#bouton-upload").click(function() {
+			$("#bouton-upload").hide(1000);
+			$("#upload").delay(1000).slideDown(1000);
+		});
+
+		$("#bouton-masquer-upload").click(function() {
+			$("#upload").slideUp(2000);
+			$("#bouton-upload").delay(2000).slideDown(1000);
+		});
 	});
 
 	// 	jQuery(function($) {

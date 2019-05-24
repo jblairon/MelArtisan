@@ -18,24 +18,13 @@ public class PromotionForm {
 	private long promotionId;
 	
 	private long societeId;
+	
+	private String fichier;
 
 
 	public PromotionForm() {
 
 	}
-
-	
-
-	public long getPromotionId() {
-		return promotionId;
-	}
-
-
-
-	public void setPromotionId(long promotionId) {
-		this.promotionId = promotionId;
-	}
-
 
 
 	public String getDescription() {
@@ -88,6 +77,16 @@ public class PromotionForm {
 	}
 
 
+	public long getPromotionId() {
+		return promotionId;
+	}
+
+
+	public void setPromotionId(long promotionId) {
+		this.promotionId = promotionId;
+	}
+
+
 	public long getSocieteId() {
 		return societeId;
 	}
@@ -98,5 +97,17 @@ public class PromotionForm {
 	}
 
 
-		
+	public String getFichier() {
+		return fichier;
+	}
+
+
+	public void setFichier(String fichier) {
+		this.fichier = fichier;
+	}
+
+
+	
+
+			
 }

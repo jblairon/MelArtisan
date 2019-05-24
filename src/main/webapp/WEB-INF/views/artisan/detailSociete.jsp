@@ -25,11 +25,12 @@
 <div id="fond" style="margin-left: -500px; margin-top: -30px;"></div>
 
 <!-- 	<script src="/resources/js/fenetre_modal.js" type="text/javascript"></script> -->
-<div id="modal" class="popup">
+<div id="modal" class="popup" style="overflow-y: auto;">
 
 	<a href="artisan/promotion/creation-promotion?id=${societeId}">Nouvelle
 		promotion</a>
 	<c:forEach var="promo" items="${societe.promotions}">
+		<img class="image-promo" alt="promo" src="<c:url value='/resources/images/societes/promotions/${promo.image }'/>" style="width: 700px;"/>
 		<fmt:parseDate value="${promo.dateDebut }" pattern="yyyy-MM-dd"
 			var="parseDateDebut" type="both"></fmt:parseDate>
 		<fmt:parseDate value="${promo.dateFin }" pattern="yyyy-MM-dd"
@@ -252,6 +253,7 @@ $(document).ready(function() {
 	// Lorsque l'on clique sur le fond on cache la fenetre modale
 	$('#fond').click(function() {
 		hideModal();
+		$("#contenu").removeClass("fixer-container");
 	});
 
 	// Lorsque l'on modifie la taille du navigateur la taille du fond change
