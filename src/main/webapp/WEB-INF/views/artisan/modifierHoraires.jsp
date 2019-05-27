@@ -55,8 +55,8 @@ fieldset {
 								<div>
 									<form:label path="amOpenHeure">Heure </form:label>
 									<div>
-										<form:select path="amOpenHeure"
-											class="custom-select col-lg-12">
+										<form:select id="heureOuvertureMatin" path="amOpenHeure"
+											class="custom-select col-lg-12" onChange="verifHoraire()">
 											<c:forEach var="i" begin="0" end="${heures.size()-13 }">
 												<form:option id="amOpenHeure" value="${heures.get(i) }">
 													<c:out value="${heures.get(i) }"></c:out>
@@ -76,7 +76,7 @@ fieldset {
 								<div>
 									<form:label path="amOpenMinutes">Minutes </form:label>
 									<div>
-										<form:select path="amOpenMinutes"
+										<form:select id="minuteOuvertureMatin" path="amOpenMinutes"
 											class="custom-select col-lg-12">
 											<c:forEach var="i" begin="0" end="${minutes.size()-1 }">
 												<form:option value="${minutes.get(i) }">
@@ -108,7 +108,7 @@ fieldset {
 								<div>
 									<form:label path="amCloseHeure">Heure </form:label>
 									<div>
-										<form:select path="amCloseHeure"
+										<form:select id="heureFermetureMatin" path="amCloseHeure"
 											class="custom-select col-lg-12">
 											<c:forEach var="i" begin="0" end="${heures.size()-13 }">
 												<form:option value="${heures.get(i) }">
@@ -129,7 +129,7 @@ fieldset {
 								<div>
 									<form:label path="amCloseMinutes">Minutes </form:label>
 									<div>
-										<form:select path="amCloseMinutes"
+										<form:select id="minuteFermetureMatin" path="amCloseMinutes"
 											class="custom-select col-lg-12">
 											<c:forEach var="i" begin="0" end="${minutes.size()-1 }">
 												<form:option value="${minutes.get(i) }">
@@ -162,8 +162,9 @@ fieldset {
 								<div>
 									<form:label path="pmOpenHeure">Heure </form:label>
 									<div>
-										<form:select path="pmOpenHeure"
-											class="custom-select col-lg-12">
+										<form:select id="heureOuvertureApresMidi" path="pmOpenHeure"
+											class="custom-select col-lg-12"
+											onChange="verifHoraireApresMidi()">
 											<c:forEach var="i" begin="12" end="${heures.size()-1 }">
 												<form:option value="${heures.get(i) }">
 													<c:out value="${heures.get(i) }"></c:out>
@@ -180,8 +181,8 @@ fieldset {
 								<div>
 									<form:label path="pmOpenMinutes">Minutes </form:label>
 									<div>
-										<form:select path="pmOpenMinutes"
-											class="custom-select col-lg-12">
+										<form:select id="minuteOuvertureApresMidi"
+											path="pmOpenMinutes" class="custom-select col-lg-12">
 											<c:forEach var="i" begin="0" end="${minutes.size()-1 }">
 												<form:option value="${minutes.get(i) }">
 													<c:out value="${minutes.get(i) }"></c:out>
@@ -212,7 +213,7 @@ fieldset {
 								<div>
 									<form:label path="pmCloseHeure">Heure </form:label>
 									<div>
-										<form:select path="pmCloseHeure"
+										<form:select id="heureFermetureApresMidi" path="pmCloseHeure"
 											class="custom-select col-lg-12">
 											<c:forEach var="i" begin="12" end="${heures.size()-1 }">
 												<form:option value="${heures.get(i) }">
@@ -230,8 +231,8 @@ fieldset {
 								<div>
 									<form:label path="pmCloseMinutes">Minutes </form:label>
 									<div>
-										<form:select path="pmCloseMinutes"
-											class="custom-select col-lg-12">
+										<form:select id="minuteFermetureApresMidi"
+											path="pmCloseMinutes" class="custom-select col-lg-12">
 											<c:forEach var="i" begin="0" end="${minutes.size()-1 }">
 												<form:option value="${minutes.get(i) }">
 													<c:out value="${minutes.get(i) }"></c:out>
@@ -261,14 +262,76 @@ fieldset {
 	</div>
 </div>
 
-<script
-	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script>
-	$("#submit").click(function() {
-// 		alert("heure = " + $("#amOpenHeure").val());
+
+$(document).ready(function() {
+		
+		if($("#heureOuvertureMatin").val()==="Fermé") {
+			$("#minuteOuvertureMatin").hide();
+			$("#heureFermetureMatin").hide();
+			$("#minuteFermetureMatin").hide();
+		}
+		else {
+			$("#minuteOuvertureMatin").show();
+			$("#heureFermetureMatin").show();
+			$("#minuteFermetureMatin").show();
+		}
+		
+		if($("#heureOuvertureApresMidi").val()==="Fermé") {
+			$("#minuteOuvertureApresMidi").hide();
+			$("#heureFermetureApresMidi").hide();
+			$("#minuteFermetureApresMidi").hide();
+		}
+		else {
+			$("#minuteOuvertureApresMidi").show();
+			$("#heureFermetureApresMidi").show();
+			$("#minuteFermetureApresMidi").show();
+		}
+		
 	});
+
+	
+	function verifHoraire(){
+		if($("#heureOuvertureMatin").val()==="Fermé") {
+			$("#minuteOuvertureMatin").hide();
+			$("#minuteOuvertureMatin").val("Fermé");
+			
+			$("#heureFermetureMatin").hide();
+			$("#heureFermetureMatin").val("Fermé");
+			
+			$("#minuteFermetureMatin").hide();
+			$("#minuteFermetureMatin").Val("Fermé");
+		}
+		else {
+			$("#minuteOuvertureMatin").show();
+			$("#heureFermetureMatin").show();
+			$("#minuteFermetureMatin").show();
+		}
+	}
+	
+	function verifHoraireApresMidi(){
+		if($("#heureOuvertureApresMidi").val()==="Fermé") {
+			$("#minuteOuvertureApresMidi").hide();
+			$("#minuteOuvertureApresMidi").val("Fermé");
+			
+			$("#heureFermetureApresMidi").hide();
+			$("#heureFermetureApresMidi").val("Fermé");
+			
+			$("#minuteFermetureApresMidi").hide();
+			$("#minuteFermetureApresMidi").val("Fermé");
+		}
+		else {
+			$("#minuteOuvertureApresMidi").show();
+			$("#heureFermetureApresMidi").show();
+			$("#minuteFermetureApresMidi").show();
+		}
+	}
+	
+	
 </script>
 
 

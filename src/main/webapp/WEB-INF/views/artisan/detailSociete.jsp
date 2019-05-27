@@ -15,9 +15,7 @@
 .div-image-entete {
 	width: 100%;
 }
-.fixer-container {
-	position: fixed;
-}
+
 
 </style>
 
@@ -25,18 +23,15 @@
 <div id="fond" style="margin-left: -500px; margin-top: -30px;"></div>
 
 <!-- 	<script src="/resources/js/fenetre_modal.js" type="text/javascript"></script> -->
-<div id="modal" class="popup" style="overflow-y: auto;">
+<div id="modal" class="popup" style="overflow-y: auto; height: 700px; ">
 
 	<a href="artisan/promotion/creation-promotion?id=${societeId}">Nouvelle
-		promotion</a>
+		promotion</a><br>
 	<c:forEach var="promo" items="${societe.promotions}">
-		<img class="image-promo" alt="promo" src="<c:url value='/resources/images/societes/promotions/${promo.image }'/>" style="width: 700px;"/>
-		<fmt:parseDate value="${promo.dateDebut }" pattern="yyyy-MM-dd"
-			var="parseDateDebut" type="both"></fmt:parseDate>
-		<fmt:parseDate value="${promo.dateFin }" pattern="yyyy-MM-dd"
-			var="parseDateFin" type="both"></fmt:parseDate>
-		
-		<div class="promotion">
+		<img class="image-promo" alt="promo" src="<c:url value='/resources/images/societes/promotions/${promo.image }'/>"
+		 style="width: 400px; float: right"/>
+		 
+		 <div class="promotion">
 			<h1>- 
 				<c:choose>
 					<c:when test="${promo.tauxReduction > 0 }">
@@ -48,6 +43,11 @@
 				</c:choose>
 			 </h1>
 		</div>
+		 
+		<fmt:parseDate value="${promo.dateDebut }" pattern="yyyy-MM-dd"
+			var="parseDateDebut" type="both"></fmt:parseDate>
+		<fmt:parseDate value="${promo.dateFin }" pattern="yyyy-MM-dd"
+			var="parseDateFin" type="both"></fmt:parseDate>
 
 		<h2 class="promotion-h2-h3 promotion-h2">
 			Du
@@ -55,11 +55,13 @@
 			au
 			<fmt:formatDate value="${parseDateFin }" pattern="dd/MM/yyyy" />
 		</h2>
-		<h3 class="promotion-h2-h3">
+		<h3 class="promotion-h2-h3" style="margin-bottom: 50px;">
 			<c:out value="${promo.description }"></c:out>
 		</h3>
 
+		<hr>
 	</c:forEach>
+	<div style="height: 200px;"></div>
 </div>
 
 <div id="contenu" class="container container-detail-client"
@@ -67,12 +69,10 @@
 
 
 
-	<!-- 	<header> -->
 	<div class="div-image-entete">
 		<img class="image-entete"
 			src="<c:url value="/resources/images/societes/background/${societe.images[0].nom}"/>" />
 	</div>
-	<!-- 	</header> -->
 
 
 
@@ -190,6 +190,17 @@
 								<c:out value="${h.amOpen } - ${h.amClose } ----- "></c:out>
 								<c:out value="${h.pmOpen } - ${h.pmClose }"></c:out>
 							</c:when>
+							
+							<c:when test="${h.amOpen == 'Fermé' && h.pmOpen != 'Fermé'}">
+								<c:out value="${h.amOpen } le matin--- "></c:out>
+								<c:out value="${h.pmOpen } - ${h.pmClose }"></c:out>
+							</c:when>
+							
+							<c:when test="${h.amOpen != 'Fermé' && h.pmOpen == 'Fermé'}">
+								<c:out value="${h.amOpen } - ${h.amClose} ----- "></c:out>
+								<c:out value="${h.pmOpen } l'après-midi"></c:out>
+							</c:when>
+							
 							<c:otherwise>
 								<c:out value="Fermé"></c:out>
 							</c:otherwise>

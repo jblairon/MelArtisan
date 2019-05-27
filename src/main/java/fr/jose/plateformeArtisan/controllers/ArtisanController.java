@@ -41,10 +41,10 @@ public class ArtisanController {
 
 	@Autowired
 	private HoraireDao horaireDao;
-	
+
 	@Autowired
 	private SocieteDateVacancesDao societeDateVacancesDao;
-	
+
 	@Autowired
 	private UtilisateurDao utilisateurDao;
 
@@ -129,11 +129,21 @@ public class ArtisanController {
 
 		Horaire h = horaireDao.findById(form.getHoraireId());
 
-		h.setAmClose(form.getAmCloseHeure() + ":" + form.getAmCloseMinutes());
-		h.setAmOpen(form.getAmOpenHeure() + ":" + form.getAmOpenMinutes());
+		if (form.getAmOpenHeure().equals("Fermé")) {
+			h.setAmOpen("Fermé");
+			h.setAmClose("Fermé");
+		} else {
+			h.setAmOpen(form.getAmOpenHeure() + ":" + form.getAmOpenMinutes());
+			h.setAmClose(form.getAmCloseHeure() + ":" + form.getAmCloseMinutes());
+		}
 
-		h.setPmClose(form.getPmCloseHeure() + ":" + form.getPmCloseMinutes());
-		h.setPmOpen(form.getPmOpenHeure() + ":" + form.getPmOpenMinutes());
+		if (form.getPmOpenHeure().equals("Fermé")) {
+			h.setPmOpen("Fermé");
+			h.setPmClose("Fermé");
+		} else {
+			h.setPmOpen(form.getPmOpenHeure() + ":" + form.getPmOpenMinutes());
+			h.setPmClose(form.getPmCloseHeure() + ":" + form.getPmCloseMinutes());
+		}
 
 		try {
 			horaireDao.update(h);
@@ -152,11 +162,11 @@ public class ArtisanController {
 	public ModelAndView mesProchainesVacances(HttpServletRequest request,
 			@RequestParam(name = "id", required = true) long id) {
 		Map<String, Object> model = new HashMap<>();
-		
+
 		SocieteDateVacancesForm form = new SocieteDateVacancesForm();
-		
+
 		Societe s = societeDao.findById(id);
-		if(s.getSocietedatevacances()!= null) {
+		if (s.getSocietedatevacances() != null) {
 			form.setDateDebut(DateUtils.stringSqlToLocalDate_FR(s.getSocietedatevacances().getDateDebut().toString()));
 			form.setDateFin(DateUtils.stringSqlToLocalDate_FR(s.getSocietedatevacances().getDateFin().toString()));
 			form.setRaison(s.getSocietedatevacances().getRaison());
@@ -186,40 +196,37 @@ public class ArtisanController {
 			}
 			return new ModelAndView("artisan/mesProchainesVacances", model);
 		}
-		
+
 		SocieteDateVacances sdv = null;
 		Societe s = societeDao.findById((long) request.getSession().getAttribute("societeId"));
 		boolean sauv = false;
-		if(s.getSocietedatevacances()== null) {
+		if (s.getSocietedatevacances() == null) {
 			sdv = new SocieteDateVacances();
 			sauv = true;
-		}
-		else {
-			 sdv = societeDateVacancesDao.findById(s.getSocietedatevacances().getId());
+		} else {
+			sdv = societeDateVacancesDao.findById(s.getSocietedatevacances().getId());
 		}
 		sdv.setDateDebut(DateUtils.stringToSqlDate(form.getDateDebut()));
 		sdv.setDateFin(DateUtils.stringToSqlDate(form.getDateFin()));
 		sdv.setRaison(form.getRaison());
-		
-		if(request.getSession().getAttribute("societeId")!=null) {
+
+		if (request.getSession().getAttribute("societeId") != null) {
 			System.out.println("dans sauvegarde");
-			
+
 			sdv.setSociete(s);
-			if(sauv) {
+			if (sauv) {
 				societeDateVacancesDao.save(sdv);
 				s.setSocietedatevacances(sdv);
 				societeDao.update(s);
-			}
-			else
+			} else
 				societeDateVacancesDao.update(sdv);
-			
-			
+
 		}
 
-		return new ModelAndView("redirect:/artisan/ma-societe?id="+s.getId(), model);
+		return new ModelAndView("redirect:/artisan/ma-societe?id=" + s.getId(), model);
 
 	}
-	
+
 	@Transactional
 	@RequestMapping("/artisan/contact")
 	public ModelAndView showContact(HttpServletRequest request, @RequestParam(name = "id", required = false) long id,
@@ -239,7 +246,7 @@ public class ArtisanController {
 			model.put("societeNom", s.getNom());
 			model.put("societe", s);
 		}
-		
+
 		Societe societeArtisan = societeDao.findById(user_id);
 		model.put("societe", societeArtisan);
 
@@ -288,8 +295,7 @@ public class ArtisanController {
 
 	}
 	/*
-	 * Partie consacrée aux promotions */
-	
+	 * Partie consacrée aux promotions
+	 */
 
-	
 }

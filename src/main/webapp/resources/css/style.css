@@ -152,25 +152,30 @@
 	color: red;
 	text-decoration: none;
 }
+.fixer-container {
+	position: fixed;
+}
 
 .promotion {
 	text-align: center;
-	margin: auto;
+	margin-left: 10px;
 	padding-top: 50px;
-	width: 200px;
-	height: 200px;
-	border-radius: 100px;
+	width: 250px;
+	height: 250px;
+	border-radius: 125px;
 	background-color: yellow;
 	margin-bottom: 50px;
 }
 
 .promotion h1 {
+	font-size: 7em;
 	color: red;
 	text-align: center;
 	margin-top: 10px;
 }
 
 .promotion-h2-h3 {
+	clear: both;
 	text-align: center;
 }
 .image-promo {
@@ -186,59 +191,22 @@
 	display: none;
 }
 
-
-
-$custom-file-text: (
-en: "Browse",
-es: "Elegir"
-);
-
 /* On crée l'animation */
-@
--webkit-keyframes clignote-promotions { 0%{
+
+@-webkit-keyframes clignote-promotions { 
+	0% {
 	box-shadow: 0px 0px 0px #EDFB08;
 }
 
-50%{
-box-shadow
- 
-:
- 
-0
-px
- 
-0
-px
- 
-50
-px
- 
-#EDFB08
-;
-
-
+	50% {
+		box-shadow: 0px 0px 50px #EDFB08;
+	}
+	100% {
+		box-shadow : 0px 0px 0px #EDFB08;
+	}
 }
-100%{
-box-shadow
- 
-:
- 
-0
-px
- 
-0
-px
- 
-0
-px
- 
-#EDFB08
-;
 
 
-
-}
-}
 /* ======================================== */
 /*	Fin promotions
 /* ======================================== */

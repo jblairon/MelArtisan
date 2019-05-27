@@ -59,17 +59,19 @@ public class SocieteServices {
 	public static String messageProchainesVacances(SocieteDateVacances v) {
 		String msg = null;
 		LocalDate ld = LocalDate.now();
+
 		
 		int jours = v.getDateDebut().getDayOfYear() - ld.getDayOfYear();
-		if(jours <= 7) {
+		if(jours <= 7 && jours > 0) {
 			msg = "Attention !!! Nous serons fermés du " + DateUtils.stringSqlToLocalDate_FR(v.getDateDebut().toString()) + " au "
 		+ DateUtils.stringSqlToLocalDate_FR(v.getDateFin().toString()) + " inclus";
 		}
-		if((jours <= 0 &&  ld.getDayOfYear() <= v.getDateFin().getDayOfYear()) ) {
+		else if((jours <= 0 &&  ld.getDayOfYear() <= v.getDateFin().getDayOfYear()) ) {
 			msg = "Nous sommes fermés du " + DateUtils.stringSqlToLocalDate_FR(v.getDateDebut().toString()) + " au "
 		+ DateUtils.stringSqlToLocalDate_FR(v.getDateFin().toString());
 		}
 		
+		System.out.println("msg = " + msg);
 		return msg;
 	}
 	

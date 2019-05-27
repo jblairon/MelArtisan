@@ -12,7 +12,7 @@
 
 <meta charset="utf-8" />
 
-<link href='resources/css/fullcalendar.min.css' rel='stylesheet' />
+<link href='/resources/css/fullcalendar.min.css' rel='stylesheet' />
 
 <!-- <script src="JQuery-1.10.1.min.js" type="text/javascript"></script> -->
 <link rel="stylesheet" href="/resources/css/style_fenetre_modal.css"
@@ -22,7 +22,7 @@
 	content="width=device-width, initial-scale=1 shrink-to-fit=no ">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link href="resources/css/bootstrap.min.css" rel="stylesheet"
+<link href="/resources/css/bootstrap.min.css" rel="stylesheet"
 	id="bootstrap-css" />
 
 <title>Les Artisans de Lille métropole</title>

@@ -86,50 +86,47 @@ public class SocieteController {
 		if (page == null || page == 0)
 			page = 1;
 
-
 		FiltreMetiersVilleForm form = new FiltreMetiersVilleForm();
 		model.put("filtreMetiersVilleForm", form);
 
 		int start = (page - 1) * max;
 		List<Societe> societes = societeDao.findByCategorie(start, max, categorieId);
 		Categorie cat = new Categorie();
-		
+
 		try {
 			cat = categorieDao.findById(categorieId);
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.put("msg","Erreur de connexion à la base de données pour la raison suivante : ");
+			model.put("msg", "Erreur de connexion à la base de données pour la raison suivante : ");
 			model.put("msgErreur", e.getMessage());
-			if(request.getSession().getAttribute("user_id") == null) {
+			if (request.getSession().getAttribute("user_id") == null) {
 				return new ModelAndView("pageErreurs", model);
-			}
-			else {
+			} else {
 				return new ModelAndView("client/pageErreurs", model);
 			}
-			
+
 		}
 
 		long nb = societeDao.nbSocietes();
 		boolean suivExist = (page * max) < nb;
 
-		List<String> villes= SocieteServices.listeDesVilles(societes);
+		List<String> villes = SocieteServices.listeDesVilles(societes);
 		Set<Metier> setMetiers;
 
 		try {
 			setMetiers = new HashSet<>(cat.getMetiers());
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.put("msg","La catétorie sélectionnée est introuvable");
+			model.put("msg", "La catétorie sélectionnée est introuvable");
 			model.put("msgErreur", e.getMessage());
-			if(request.getSession().getAttribute("user_id") == null) {
+			if (request.getSession().getAttribute("user_id") == null) {
 				return new ModelAndView("pageErreurs", model);
-			}
-			else {
+			} else {
 				return new ModelAndView("client/pageErreurs", model);
 			}
-			
+
 		}
-			
+
 		List<Metier> metiers = new ArrayList<>(setMetiers);
 		List<Categorie> categories = categorieDao.findAll();
 
@@ -203,8 +200,9 @@ public class SocieteController {
 
 	// pour l'admin affiche un tableau des sociétés
 	@RequestMapping(value = "/admin/societe/lister", method = RequestMethod.GET)
-	public String listerSocietes(HttpServletRequest request ,@RequestParam(name = "page", required = false) Integer page,
-			@RequestParam(name = "max", required = false) Integer max, Model model) throws Exception{
+	public String listerSocietes(HttpServletRequest request,
+			@RequestParam(name = "page", required = false) Integer page,
+			@RequestParam(name = "max", required = false) Integer max, Model model) throws Exception {
 
 		if (max == null || max == 0)
 			max = 15;
@@ -217,14 +215,13 @@ public class SocieteController {
 			societes = societeDao.findAll();
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.addAttribute("msg","Erreur de connexion à la base de données");
-			if(request.getSession().getAttribute("user_id") == null) {
+			model.addAttribute("msg", "Erreur de connexion à la base de données");
+			if (request.getSession().getAttribute("user_id") == null) {
 				return "pageErreurs";
-			}
-			else {
+			} else {
 				return "client/pageErreurs";
 			}
-			
+
 		}
 
 		long nb = societeDao.nbSocietes();
@@ -252,7 +249,6 @@ public class SocieteController {
 
 		// récupération de l'objet ChoixCategorieForm
 		ChoixCategorieForm form = new ChoixCategorieForm();
-
 
 		// Si l'id de la société est différent de 0 donc il s'agit d'une modification de
 		// société
@@ -291,8 +287,8 @@ public class SocieteController {
 				&& form.getNouvelleCategorie() != "") {
 			Categorie nouvelleCategorie = new Categorie();
 			nouvelleCategorie.setLibelle(form.getNouvelleCategorie());
-			
-			//Création du nom de l'image avec le libellé de la catétorie 
+
+			// Création du nom de l'image avec le libellé de la catétorie
 			nouvelleCategorie.setImage(
 					FormatImageName.removeAccents(nouvelleCategorie.getLibelle().toLowerCase().replaceAll("\\s", "")));
 
@@ -361,7 +357,7 @@ public class SocieteController {
 		Categorie cat = categorieDao.findById(form.getCategorieId());
 		List<Metier> metiers = new ArrayList<>();
 		String tabNouveauxMetiers[] = form.getMetiersForm();
-		
+
 		// on vérifie si un nouveau métier a été créé
 		if (tabNouveauxMetiers != null && tabNouveauxMetiers.length > 0) {
 			ArrayList<String> listeNouveauxMetiers = new ArrayList<>();
@@ -385,7 +381,8 @@ public class SocieteController {
 
 		}
 
-		// on récupére tous les métiers issus du formulaire et on les ajoute é la atégorie
+		// on récupére tous les métiers issus du formulaire et on les ajoute é la
+		// atégorie
 		long[] tabMetiers = form.getMetiersId();
 
 		for (int i = 0; i < tabMetiers.length; i++) {
@@ -469,12 +466,11 @@ public class SocieteController {
 		// pour la modification d'une société
 		if (request.getSession().getAttribute("societe") != null) {
 			s = (Societe) request.getSession().getAttribute("societe");
-		} 
+		}
 		// pour la création d'une nouvelle société
 		else {
 			s = new Societe();
 		}
-
 
 		/*
 		 * Gestion des prestations 1) prestations existantes en base de données
@@ -623,7 +619,7 @@ public class SocieteController {
 
 			}
 		}
-		
+
 		// si c'est une modification on update la société
 		if (request.getSession().getAttribute("societe") != null) {
 			societeDao.update(s);
@@ -689,7 +685,8 @@ public class SocieteController {
 	}
 
 	@RequestMapping(value = "/societe/lister-front", method = RequestMethod.GET)
-	public String listerSocietesFront(HttpServletRequest request ,@RequestParam(name = "page", required = false) Integer page,
+	public String listerSocietesFront(HttpServletRequest request,
+			@RequestParam(name = "page", required = false) Integer page,
 			@RequestParam(name = "max", required = false) Integer max, Model model) {
 
 		if (max == null || max == 0)
@@ -703,14 +700,13 @@ public class SocieteController {
 			societes = societeDao.findAll();
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.addAttribute("msg","Erreur d'accès à la base de données");
-			if(request.getSession().getAttribute("user_id") == null) {
+			model.addAttribute("msg", "Erreur d'accès à la base de données");
+			if (request.getSession().getAttribute("user_id") == null) {
 				return "pageErreurs";
-			}
-			else {
+			} else {
 				return "client/pageErreurs";
 			}
-			
+
 		}
 
 		long nb = societeDao.nbSocietes();
@@ -740,24 +736,23 @@ public class SocieteController {
 	public ModelAndView afficherDetailSociete(HttpServletRequest request,
 			@RequestParam(name = "id", required = true) long id,
 			@RequestParam(name = "ajouteAuxFavoris", required = false) String ajouteAuxFavoris,
-			@RequestParam(name = "msgNote", required = false) String msgNote) throws Exception{
+			@RequestParam(name = "msgNote", required = false) String msgNote) throws Exception {
 		Map<String, Object> model = new HashMap<>();
-		
+
 		List<Categorie> categories;
 
 		try {
 			categories = categorieDao.findAll();
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.put("msg","Erreur de connexion à la base de données pour la raison suivante : ");
+			model.put("msg", "Erreur de connexion à la base de données pour la raison suivante : ");
 			model.put("msgErreur", e.getMessage());
-			if(request.getSession().getAttribute("user_id") == null) {
+			if (request.getSession().getAttribute("user_id") == null) {
 				return new ModelAndView("pageErreurs", model);
-			}
-			else {
+			} else {
 				return new ModelAndView("client/pageErreurs", model);
 			}
-			
+
 		}
 		model.put("categories", categories);
 
@@ -788,10 +783,16 @@ public class SocieteController {
 
 			if (societe.getHoraires().size() > 0) {
 
-				if (societe.getHoraires().get(0).getAmOpen().equals("Fermé")
-						&& societe.getHoraires().get(0).getPmOpen().equals("Fermé")) {
-					messageOpenClose = "Aujourd'hui fermé toute la journée";
-					divClass = "alert alert-block alert-danger div-class";
+				for (int i = 0; i < societe.getHoraires().size(); i++) {
+
+					if (societe.getHoraires().get(i).getAmOpen().equals("Fermé")
+							&& societe.getHoraires().get(i).getPmOpen().equals("Fermé")) {
+						messageOpenClose = "Aujourd'hui fermé toute la journée";
+						divClass = "alert alert-block alert-danger div-class";
+						societe.setAmCloseToDay(true);
+						societe.setPmCloseToDay(true);
+						System.out.println("equals fermé");
+					}
 				}
 			}
 
@@ -812,15 +813,16 @@ public class SocieteController {
 			// pour le message des prochaines vacances
 			if (societe.getSocietedatevacances() != null) {
 				messageVacances = SocieteServices.messageProchainesVacances(societe.getSocietedatevacances());
-				model.put("messageVacances", messageVacances);
-				if (messageVacances.contains("!!!")) {
+				if (messageVacances != null && messageVacances.contains("!!!")) {
 					divClassVacances = "alert alert-warning";
-				} else if (messageVacances.contains("Nous sommes fermés")) {
+				} else if (messageVacances != null && messageVacances.contains("Nous sommes fermés")) {
 					divClassVacances = "alert alert-danger";
 					messageOpenClose = null;
 					divClass = "div-class-idsplay-none";
 				}
+				model.put("messageVacances", messageVacances);
 				model.put("divClassVacances", divClassVacances);
+
 			}
 
 			Double moyenne = SocieteServices.calculerNoteMoyenne(societe.getNotes());
