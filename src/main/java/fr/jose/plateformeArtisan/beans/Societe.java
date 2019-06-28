@@ -93,6 +93,10 @@ public class Societe implements Serializable {
 			@JoinColumn(name = "horaire_id") })
 	private List<Horaire> horaires;
 
+	// bi-directional one to many association to newsletter
+//	@OneToMany(mappedBy = "societe", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<Newsletter> newsletters;
+
 	// bi-directional many-to-one association to promotion
 	@OneToMany(mappedBy = "societe", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Promotion> promotions;

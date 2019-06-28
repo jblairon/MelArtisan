@@ -43,6 +43,7 @@ fieldset {
 				modelAttribute="horairesForm">
 
 				<form:hidden path="horaireId" />
+				<form:hidden path="societe_id" />
 
 				<div style="margin-left: 80px">
 					<div style="float: left">

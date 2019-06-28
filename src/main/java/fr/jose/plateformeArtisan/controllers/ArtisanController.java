@@ -1,5 +1,6 @@
 package fr.jose.plateformeArtisan.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.jose.plateformeArtisan.beans.Horaire;
+import fr.jose.plateformeArtisan.beans.Newsletter;
 import fr.jose.plateformeArtisan.beans.Societe;
 import fr.jose.plateformeArtisan.beans.SocieteDateVacances;
 import fr.jose.plateformeArtisan.beans.Utilisateur;
 import fr.jose.plateformeArtisan.dao.HoraireDao;
+import fr.jose.plateformeArtisan.dao.NewsletterDao;
 import fr.jose.plateformeArtisan.dao.SocieteDao;
 import fr.jose.plateformeArtisan.dao.SocieteDateVacancesDao;
 import fr.jose.plateformeArtisan.dao.UtilisateurDao;
@@ -31,6 +34,7 @@ import fr.jose.plateformeArtisan.formbeans.HorairesForm;
 import fr.jose.plateformeArtisan.formbeans.SocieteDateVacancesForm;
 import fr.jose.plateformeArtisan.tools.DateUtils;
 import fr.jose.plateformeArtisan.tools.EmailTools;
+import fr.jose.plateformeArtisan.tools.FormatNombre;
 import fr.jose.plateformeArtisans.services.SocieteServices;
 
 @Controller
@@ -38,6 +42,9 @@ public class ArtisanController {
 
 	@Autowired
 	private SocieteDao societeDao;
+
+	@Autowired
+	private NewsletterDao newsletterDao;
 
 	@Autowired
 	private HoraireDao horaireDao;
@@ -51,11 +58,26 @@ public class ArtisanController {
 	@Transactional
 	@RequestMapping(value = "/artisan/societe/mes-horaires", method = RequestMethod.GET)
 	public String societeHoraires(HttpServletRequest request,
-			@RequestParam(name = "id", required = true) long societeId, Model model) {
+			@RequestParam(name = "id", required = true) long societeId,
+			@RequestParam(name = "msgEnvoiMail", required = false) String msgEnvoiMail, Model model) {
+		
+		System.out.println("msgEnvoiMail = " + msgEnvoiMail);
 
 		// Si l'id de la société est différent de 0 donc il s'agit d'une modification de
 		if (societeId != 0) { // c'est une modification de société
 			Societe s = societeDao.findById(societeId);
+			
+			if(msgEnvoiMail != null && msgEnvoiMail != "") {
+				String classMsgEnvoiMail= "";
+				if(msgEnvoiMail.contains("Erreur")) {
+					classMsgEnvoiMail = "alert alert-block alert-danger";
+				}
+				else {
+					classMsgEnvoiMail = "alert alert-block alert-info";
+				}
+				model.addAttribute("msgEnvoiMail", msgEnvoiMail);
+				model.addAttribute("classMsgEnvoiMail", classMsgEnvoiMail);
+			}
 
 			model.addAttribute("horaires", s.getHoraires());
 			model.addAttribute("societe", s);
@@ -67,7 +89,8 @@ public class ArtisanController {
 	@RequestMapping(value = { "/artisan/societe/modifier-horaires",
 			"/admin/societe/modifier-horaires" }, method = RequestMethod.GET)
 	public ModelAndView modifierHorairesSociete(HttpServletRequest request,
-			@RequestParam(name = "id", required = true) long id) {
+			@RequestParam(name = "id", required = true) long id,
+			@RequestParam(name = "societe_id", required = true) long societe_id) {
 		Map<String, Object> model = new HashMap<>();
 
 		Horaire h = horaireDao.findById(id);
@@ -104,6 +127,7 @@ public class ArtisanController {
 		model.put("heures", heures);
 		model.put("minutes", minutes);
 		model.put("jour", h.getJour());
+		model.put("societe_id", societe_id);
 
 		model.put("horairesForm", form);
 
@@ -115,6 +139,7 @@ public class ArtisanController {
 	@RequestMapping(value = "/artisan/societe/valider-horaires", method = RequestMethod.POST)
 	public String sauvegarderHoraires(HttpServletRequest request,
 			@Valid @ModelAttribute("horairesForm") HorairesForm form, BindingResult result, Model model) {
+		
 		if (result.hasErrors()) {
 			if (result.getFieldError().getField().toString().equals("email")) {
 				model.addAttribute("msg", "Errreur : le format de l'adresse email n'est pas correct !");
@@ -126,12 +151,16 @@ public class ArtisanController {
 			model.addAttribute("horairesForm", form);
 			return ("redirect:artisan/modifier-horaires");
 		}
+		Societe s = societeDao.findById((long) request.getSession().getAttribute("societeId"));
 
 		Horaire h = horaireDao.findById(form.getHoraireId());
+		System.out.println("form.getAmOpenHeure() = " + form.getAmOpenHeure());
 
 		if (form.getAmOpenHeure().equals("Fermé")) {
+			System.out.println("C'est bien fermé");
 			h.setAmOpen("Fermé");
 			h.setAmClose("Fermé");
+			
 		} else {
 			h.setAmOpen(form.getAmOpenHeure() + ":" + form.getAmOpenMinutes());
 			h.setAmClose(form.getAmCloseHeure() + ":" + form.getAmCloseMinutes());
@@ -140,9 +169,17 @@ public class ArtisanController {
 		if (form.getPmOpenHeure().equals("Fermé")) {
 			h.setPmOpen("Fermé");
 			h.setPmClose("Fermé");
+			s.setPmCloseToDay(true);
 		} else {
 			h.setPmOpen(form.getPmOpenHeure() + ":" + form.getPmOpenMinutes());
 			h.setPmClose(form.getPmCloseHeure() + ":" + form.getPmCloseMinutes());
+			s.setPmCloseToDay(false);
+			
+		}
+		try {
+			societeDao.update(s);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		try {
@@ -150,6 +187,59 @@ public class ArtisanController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		// Pour l'envoi de mails à tous le sutilisateurs ayant accepté la nexsletter
+		// on récupère la liste de newsletters de la société
+		
+		
+		List<Newsletter> news = new ArrayList<Newsletter>();
+		List<String> emails = new ArrayList<>();
+
+		news = newsletterDao.findBySociete_id(s.getId());
+		for (Newsletter n : news) {
+			Utilisateur utilisateur = utilisateurDao.findById(n.getUtilisateur_id());
+			if (utilisateur != null)
+				emails.add(utilisateur.getEmail());
+		}
+		// on envoie les mails
+		String msgMail = "La société " + s.getNom() + " a modifié ses horaires pour le " +
+		h.getJour() + ". Désormais les horaires seront : ";
+		if(h.getAmOpen().equals("Fermé") && h.getPmOpen().equals("Fermé")) {
+			msgMail += "  << Fermé toute la journée >>";
+		}
+		else if (!h.getAmOpen().equals("Fermé") && h.getPmOpen().equals("Fermé")) {
+			msgMail += " << Ouvert le matin de " + h.getAmOpen() + " à " + h.getAmClose() + " mais fermé l'après-midi >>";
+		}
+		else if(h.getAmOpen().equals("Fermé") && !h.getPmOpen().equals("Fermé")) {
+			msgMail += " << Fermé le matin mais ouvert l'après-midi de " + h.getPmOpen() + " à " + h.getPmClose() + ">>";
+		}
+		else {
+			msgMail += " << le matin de " + h.getAmOpen() + " à " + h.getAmClose();
+			msgMail += " et l'après-midi de " + h.getPmOpen() + " à " + h.getPmClose() + " >> ";
+		}
+		
+		Utilisateur u = new Utilisateur();
+
+		if(request.getSession().getAttribute("user_id")!= null) {
+			u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+		}
+		else {
+			return "login";
+		}
+		String sujet = s.getNom() + " vient de modifier ses horaires pour " + h.getJour() + " !!!";
+		String msgEnvoiMail = "";
+		for (String email : emails) {
+			try {
+				EmailTools.sendEmailToClient(u.getEmail(), sujet, msgMail, email);
+				msgEnvoiMail = "Un email a été envoyé à tous vos clients ayant accepté la newsletter";
+			} catch (Exception e) {
+				System.out.println("Erreur = " + e.getMessage());
+				msgEnvoiMail = "L'envoi de mail a échoué, veuillez contacter l'administrateur du site";
+				e.printStackTrace();
+			}
+			model.addAttribute("msgEnvoiMail", msgEnvoiMail);
+		}
+		// Fin Envoi mails
 
 		if (request.getSession().getAttribute("user_id") != null) {
 			return "redirect:/artisan/societe/mes-horaires?id=" + request.getSession().getAttribute("societeId");
@@ -220,8 +310,52 @@ public class ArtisanController {
 				societeDao.update(s);
 			} else
 				societeDateVacancesDao.update(sdv);
+			
+			
+			
+			// Pour l'envoi de mails à tous le sutilisateurs ayant accepté la nexsletter
+			// on récupère la liste de newsletters de la société
+			
+			List<Newsletter> news = new ArrayList<Newsletter>();
+			List<String> emails = new ArrayList<>();
+
+			news = newsletterDao.findBySociete_id(s.getId());
+			for (Newsletter n : news) {
+				Utilisateur utilisateur = utilisateurDao.findById(n.getUtilisateur_id());
+				if (utilisateur != null)
+					emails.add(utilisateur.getEmail());
+			}
+			// on envoie les mails
+			String msgMail = "La société " + s.getNom() + " a modifié ses dates pour ses prochaines vacances, elle sera donc fermée du  " 
+			+ DateUtils.stringSqlToLocalDate_FR(sdv.getDateDebut().toString()) +
+			" au " + DateUtils.stringSqlToLocalDate_FR(sdv.getDateFin().toString()) + " inclus";
+			
+			Utilisateur u = new Utilisateur();
+
+			if(request.getSession().getAttribute("user_id")!= null) {
+				u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+			}
+			else {
+				return new ModelAndView("login");
+			}
+			String sujet = s.getNom() + " vient de modifier ses dates de prochaines vacances !!!";
+			String msgEnvoiMail = "";
+			for (String email : emails) {
+				try {
+					EmailTools.sendEmailToClient(u.getEmail(), sujet, msgMail, email);
+					msgEnvoiMail = "Un email a été envoyé à tous vos clients ayant accepté la newsletter";
+				} catch (Exception e) {
+					System.out.println("Erreur = " + e.getMessage());
+					msgEnvoiMail = "L'envoi de mail a échoué, veuillez contacter l'administrateur du site";
+					e.printStackTrace();
+				}
+				model.put("msgEnvoiMail", msgEnvoiMail);
+			}
+			// Fin Envoi mails
 
 		}
+		
+		
 
 		return new ModelAndView("redirect:/artisan/ma-societe?id=" + s.getId(), model);
 
@@ -233,7 +367,6 @@ public class ArtisanController {
 			@RequestParam(name = "user_id", required = false) long user_id) {
 		Map<String, Object> model = new HashMap<>();
 
-		System.out.println("session = " + request.getSession().getAttribute("user_id"));
 		ContactForm cf = new ContactForm();
 		if (request.getSession().getAttribute("user_email") != null) {
 			String email = request.getSession().getAttribute("user_email").toString();

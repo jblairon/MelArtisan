@@ -76,6 +76,7 @@ public class SocieteDao {
 			System.out.println("dans societe.findById notes taille = " + s.getNotes().size());
 		if(s!=null && s.getPromotions()!=null )
 			System.out.println("dans societe.findById promotions taille = " + s.getPromotions().size());
+
 		
 		return s;
 	}

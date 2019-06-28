@@ -18,8 +18,8 @@
 			<c:out value="${sessionScope.user_prenom} ${sessionScope.user_nom }" />
 		</h1>
 	</div>
-	
-	<div class="div-favoris-accueil" >
+
+	<div class="div-favoris-accueil">
 
 		<a class="mes-favoris" href="client/mes-favoris"> <img
 			class="image-favoris"
@@ -42,7 +42,8 @@
 	</c:if>
 
 
-	<div class="div-titre-h1" style="clear: both; background-color: #eeeeee;">
+	<div class="div-titre-h1"
+		style="clear: both; background-color: #eeeeee;">
 		<h1 class="my-4 titre-h1 titre-h1-artisan">Catégories de métiers</h1>
 	</div>
 
@@ -62,8 +63,10 @@
 						class="card-img-top"
 						src="<c:url value="/resources/images/categories/${cat.image }"/>"
 						alt="${cat.libelle }" /></a>
-					<div class="card-body" style="background-color: #eeeeee; color: #000000;">
-						<h2 class="card-title" style="text-align: center; font-size: 20px;">${cat.libelle }</h2>
+					<div class="card-body"
+						style="background-color: #eeeeee; color: #000000;">
+						<h2 class="card-title"
+							style="text-align: center; font-size: 20px;">${cat.libelle }</h2>
 
 					</div>
 				</div>
@@ -71,6 +74,34 @@
 		</c:forEach>
 	</div>
 	<br /> <br /> <br /> <br />
+
+	<form method="POST" action="client/societe/inscrire-newsletter-melArtisan">
+		<section id="second" class="section">
+
+			<input type="hidden" name="id" value="${societe.id }" />
+			<div class="container">
+				<c:choose>
+					<c:when test="${newsletter == false }">
+						<input type="checkbox" name="newsletter" id="checkbox-1">
+
+						<label for="checkbox-1"><span class="checkbox" style="color: #2A5169;">Recevoir toutes les nouveautés et informations sur MelArtisan </span></label>
+					</c:when>
+					<c:otherwise>
+						<input type="checkbox" name="nonNewsletter" id="checkbox-1">
+						<label for="checkbox-1"><span class="checkbox">Je
+								ne souhaite plus recevoir des informations, nouveautés,
+								 concernant MelArtisan </span></label>
+					</c:otherwise>
+				</c:choose>
+			</div>
+
+			<div>
+				<input type="submit" class="btn btn-primary" value="Valider" />
+			</div>
+		</section>
+	</form>
+
+
 </div>
 
 

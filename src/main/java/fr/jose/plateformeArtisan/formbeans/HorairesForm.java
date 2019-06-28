@@ -3,6 +3,7 @@ package fr.jose.plateformeArtisan.formbeans;
 public class HorairesForm {
 	
 	private long horaireId;
+	private long societe_id;
 	
 	private String amOpenHeure;
 	private String amOpenMinutes;
@@ -15,9 +16,11 @@ public class HorairesForm {
 	private String pmCloseMinutes;
 	
 	
+	
 	public HorairesForm() {
 		
 	}
+
 
 
 	public long getHoraireId() {
@@ -25,9 +28,23 @@ public class HorairesForm {
 	}
 
 
+
 	public void setHoraireId(long horaireId) {
 		this.horaireId = horaireId;
 	}
+
+
+
+	public long getSociete_id() {
+		return societe_id;
+	}
+
+
+
+	public void setSociete_id(long societe_id) {
+		this.societe_id = societe_id;
+	}
+
 
 
 	public String getAmOpenHeure() {
@@ -35,9 +52,11 @@ public class HorairesForm {
 	}
 
 
+
 	public void setAmOpenHeure(String amOpenHeure) {
 		this.amOpenHeure = amOpenHeure;
 	}
+
 
 
 	public String getAmOpenMinutes() {
@@ -45,9 +64,11 @@ public class HorairesForm {
 	}
 
 
+
 	public void setAmOpenMinutes(String amOpenMinutes) {
 		this.amOpenMinutes = amOpenMinutes;
 	}
+
 
 
 	public String getAmCloseHeure() {
@@ -55,9 +76,11 @@ public class HorairesForm {
 	}
 
 
+
 	public void setAmCloseHeure(String amCloseHeure) {
 		this.amCloseHeure = amCloseHeure;
 	}
+
 
 
 	public String getAmCloseMinutes() {
@@ -65,9 +88,11 @@ public class HorairesForm {
 	}
 
 
+
 	public void setAmCloseMinutes(String amCloseMinutes) {
 		this.amCloseMinutes = amCloseMinutes;
 	}
+
 
 
 	public String getPmOpenHeure() {
@@ -75,9 +100,11 @@ public class HorairesForm {
 	}
 
 
+
 	public void setPmOpenHeure(String pmOpenHeure) {
 		this.pmOpenHeure = pmOpenHeure;
 	}
+
 
 
 	public String getPmOpenMinutes() {
@@ -85,9 +112,11 @@ public class HorairesForm {
 	}
 
 
+
 	public void setPmOpenMinutes(String pmOpenMinutes) {
 		this.pmOpenMinutes = pmOpenMinutes;
 	}
+
 
 
 	public String getPmCloseHeure() {
@@ -95,9 +124,11 @@ public class HorairesForm {
 	}
 
 
+
 	public void setPmCloseHeure(String pmCloseHeure) {
 		this.pmCloseHeure = pmCloseHeure;
 	}
+
 
 
 	public String getPmCloseMinutes() {
@@ -105,10 +136,11 @@ public class HorairesForm {
 	}
 
 
+
 	public void setPmCloseMinutes(String pmCloseMinutes) {
 		this.pmCloseMinutes = pmCloseMinutes;
 	}
-	
-	
-			
+
+
+				
 }

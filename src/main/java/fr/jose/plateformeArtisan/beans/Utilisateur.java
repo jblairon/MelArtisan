@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -55,29 +57,31 @@ public class Utilisateur implements Serializable {
 	private String mdp;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "utilisateur_societe", joinColumns = { @JoinColumn(name = "utilisateur_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "societe_id") })
+	@JoinTable(name = "utilisateur_societe", joinColumns = {
+			@JoinColumn(name = "utilisateur_id") }, inverseJoinColumns = { @JoinColumn(name = "societe_id") })
 	private List<Societe> societes;
 
 	@Column(name = "admin", nullable = false)
 	private boolean admin;
-	
+
 	@Column(name = "artisan", nullable = true)
 	private boolean artisan;
 
 	@Column(name = "client", nullable = false)
 	private boolean client;
-	
 
 	@Temporal(TemporalType.DATE)
 	private Date dateCreation;
-	
+
 	@Column
 	private LocalDate dateDeNaissance;
-	
-	//Pour l'artisan
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="utilisateur")
+
+	// Pour l'artisan
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "utilisateur")
 	private Societe maSociete;
+	
+	@Column
+	private boolean melArtisan_newsletter;
 
 	public long getId() {
 		return id;
@@ -191,6 +195,14 @@ public class Utilisateur implements Serializable {
 		this.maSociete = maSociete;
 	}
 
+	public boolean isMelArtisan_newsletter() {
+		return melArtisan_newsletter;
+	}
+
+	public void setMelArtisan_newsletter(boolean melArtisan_newsletter) {
+		this.melArtisan_newsletter = melArtisan_newsletter;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -210,6 +222,7 @@ public class Utilisateur implements Serializable {
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((maSociete == null) ? 0 : maSociete.hashCode());
 		result = prime * result + ((mdp == null) ? 0 : mdp.hashCode());
+		result = prime * result + (melArtisan_newsletter ? 1231 : 1237);
 		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
 		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
 		result = prime * result + ((societes == null) ? 0 : societes.hashCode());
@@ -265,6 +278,8 @@ public class Utilisateur implements Serializable {
 				return false;
 		} else if (!mdp.equals(other.mdp))
 			return false;
+		if (melArtisan_newsletter != other.melArtisan_newsletter)
+			return false;
 		if (nom == null) {
 			if (other.nom != null)
 				return false;
@@ -288,8 +303,9 @@ public class Utilisateur implements Serializable {
 		return "Utilisateur [id=" + id + ", genre=" + genre + ", prenom=" + prenom + ", nom=" + nom + ", adresse="
 				+ adresse + ", email=" + email + ", mdp=" + mdp + ", societes=" + societes + ", admin=" + admin
 				+ ", artisan=" + artisan + ", client=" + client + ", dateCreation=" + dateCreation
-				+ ", dateDeNaissance=" + dateDeNaissance + ", maSociete=" + maSociete + "]";
+				+ ", dateDeNaissance=" + dateDeNaissance + ", maSociete=" + maSociete + ", melArtisan_newsletter="
+				+ melArtisan_newsletter + "]";
 	}
 
-								
+	
 }

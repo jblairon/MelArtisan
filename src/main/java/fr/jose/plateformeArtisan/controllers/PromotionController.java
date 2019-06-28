@@ -1,5 +1,6 @@
 package fr.jose.plateformeArtisan.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.jose.plateformeArtisan.beans.Newsletter;
 import fr.jose.plateformeArtisan.beans.Promotion;
 import fr.jose.plateformeArtisan.beans.Societe;
 import fr.jose.plateformeArtisan.beans.Utilisateur;
+import fr.jose.plateformeArtisan.dao.NewsletterDao;
 import fr.jose.plateformeArtisan.dao.PromotionDao;
 import fr.jose.plateformeArtisan.dao.SocieteDao;
 import fr.jose.plateformeArtisan.dao.UtilisateurDao;
@@ -28,6 +31,8 @@ import fr.jose.plateformeArtisan.formbeans.PromotionForm;
 import fr.jose.plateformeArtisan.tools.DateUtils;
 import fr.jose.plateformeArtisan.tools.EmailTools;
 import fr.jose.plateformeArtisan.tools.FormatImageName;
+import fr.jose.plateformeArtisan.tools.FormatNombre;
+import fr.jose.plateformeArtisans.services.SocieteServices;
 
 @Controller
 public class PromotionController {
@@ -40,6 +45,9 @@ public class PromotionController {
 
 	@Autowired
 	private UtilisateurDao utilisateurDao;
+	
+	@Autowired
+	private NewsletterDao newsletterDao;
 
 	@Transactional
 	@RequestMapping(value = { "/artisan/societe/mes-promotions",
@@ -144,11 +152,52 @@ public class PromotionController {
 		promotionDao.save(promo);
 		s.getPromotions().add(promo);
 		societeDao.update(s);
+		
+		// Pour l'envoi de mails à tous le sutilisateurs ayant accepté la nexsletter
+		//on récupère la liste de newsletters de la société
+		List<Newsletter> news = new ArrayList<Newsletter>();
+		List<String> emails = new ArrayList<>();
+		
+		news = newsletterDao.findBySociete_id(s.getId());
+		for (Newsletter n : news) {
+			Utilisateur utilisateur = utilisateurDao.findById(n.getUtilisateur_id());
+			if (utilisateur != null)
+				emails.add(utilisateur.getEmail());
+		}
+		//on envoie les mails
+		String msgMail = "";
+		
+		
+		if(promo.getRemise()> 0) {
+			msgMail += FormatNombre.supprimeZeroApresVirgule(promo.getRemise()) + "€ de remise " + promo.getDescription() + 
+					" du " + DateUtils.stringSqlToLocalDate_FR(promo.getDateDebut().toString()) + 
+					" au " + DateUtils.stringSqlToLocalDate_FR(promo.getDateFin().toString());
+		}
+		else {
+			msgMail += FormatNombre.supprimeZeroApresVirgule(promo.getTauxReduction()) + "% de réduction " + promo.getDescription() + 
+					" du " + DateUtils.stringSqlToLocalDate_FR(promo.getDateDebut().toString()) + 
+					" au " + DateUtils.stringSqlToLocalDate_FR(promo.getDateFin().toString());
+		}
+
+		String sujet = s.getNom() + " vient d'ajouter une promotion !!!";
+		String msgEnvoiMail = "";
+		for (String email : emails) {
+			try {
+				EmailTools.sendEmailToClient(u.getEmail(), sujet, msgMail, email);
+				msgEnvoiMail = "Un email a été envoyé à tous vos clients ayant accepté la newsletter";
+			} catch (Exception e) {
+				System.out.println("Erreur = " + e.getMessage());
+				msgEnvoiMail = "Erreur !!! L'envoi de mails a échoué, veuillez contacter l'administrateur du site";
+				e.printStackTrace();
+			}
+		}
+		model.put("msgEnvoiMail", msgEnvoiMail);
+		
 
 		if (u.isAdmin()) {
 			return new ModelAndView("redirect:/admin/promotion/lister?id=" + s.getId());
 		} else if (u.isArtisan()) {
-			return new ModelAndView("redirect:/artisan/ma-societe?id=" + s.getId());
+			return new ModelAndView("redirect:/artisan/ma-societe?id=" + s.getId(), model);
 		}
 		return new ModelAndView("redirect:/login");
 
@@ -173,7 +222,6 @@ public class PromotionController {
 		form.setPromotionId(promo_id);
 
 		Promotion promo = promotionDao.findById(promo_id);
-		System.out.println("l 175");
 
 		Societe s = societeDao.findById(promo.getSociete().getId());
 		model.put("societe", s);
@@ -204,12 +252,13 @@ public class PromotionController {
 			throws java.text.ParseException {
 		Map<String, Object> model = new HashMap<>();
 
+
 		Utilisateur u =null;
 		if (request.getSession().getAttribute("user_id") != null) {
 			u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
 			System.out.println("email = " + u.getEmail());
 		}
-
+		
 		if (result.hasErrors()) {
 			model.put("errors", result);
 			model.put("promotionForm", form);
@@ -219,6 +268,8 @@ public class PromotionController {
 			}
 			return new ModelAndView("artisan/modificationPromotion", model);
 		}
+
+		
 
 		Promotion promo = new Promotion();
 		promo = promotionDao.findById(form.getPromotionId());
@@ -261,15 +312,22 @@ public class PromotionController {
 
 	}
 
-	@RequestMapping(value = "/admin/supprimer-promotion", method = RequestMethod.GET)
-	public String deleteCategorie(@RequestParam(name = "id", required = false) long id, Model model) {
+	@RequestMapping(value = {"/admin/promotion/supprimer-promotion", "/artisan/promotion/supprimer-promotion"}, method = RequestMethod.GET)
+	public String deletePromotion(HttpServletRequest request,
+			@RequestParam(name = "promo_id", required = true) long id,
+			@RequestParam(name = "societe_id", required = true) long societe_id,Model model) {
 		try {
 			promotionDao.delete(id);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
-		return "redirect:/admin/promotion/lister";
+		
+		Utilisateur u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+		if(u.isAdmin()) {
+			return "redirect:/admin/promotion/lister";
+		}
+		return "redirect:/artisan/societe/mes-promotions?id="+societe_id;
+		
 	}
 
 }

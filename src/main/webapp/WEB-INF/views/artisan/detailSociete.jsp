@@ -15,35 +15,36 @@
 .div-image-entete {
 	width: 100%;
 }
-
-
 </style>
 
 <!-- Pour la fenêtre modal des promotions -->
 <div id="fond" style="margin-left: -500px; margin-top: -30px;"></div>
 
 <!-- 	<script src="/resources/js/fenetre_modal.js" type="text/javascript"></script> -->
-<div id="modal" class="popup" style="overflow-y: auto; height: 700px; ">
+<div id="modal" class="popup" style="overflow-y: auto; height: 700px;">
 
 	<a href="artisan/promotion/creation-promotion?id=${societeId}">Nouvelle
 		promotion</a><br>
 	<c:forEach var="promo" items="${societe.promotions}">
-		<img class="image-promo" alt="promo" src="<c:url value='/resources/images/societes/promotions/${promo.image }'/>"
-		 style="width: 400px; float: right"/>
-		 
-		 <div class="promotion">
-			<h1>- 
+		<img class="image-promo" alt="promo"
+			src="<c:url value='/resources/images/societes/promotions/${promo.image }'/>"
+			style="width: 400px; float: right" />
+
+		<div class="promotion">
+			<h1>
+				-
 				<c:choose>
 					<c:when test="${promo.tauxReduction > 0 }">
-						<fmt:formatNumber  type="percent" pattern="##"  value="${promo.tauxReduction }"></fmt:formatNumber> %
+						<fmt:formatNumber type="percent" pattern="##"
+							value="${promo.tauxReduction }"></fmt:formatNumber> %
 					</c:when>
 					<c:otherwise>
 						<c:out value="${promo.remise }" /> €
 					</c:otherwise>
 				</c:choose>
-			 </h1>
+			</h1>
 		</div>
-		 
+
 		<fmt:parseDate value="${promo.dateDebut }" pattern="yyyy-MM-dd"
 			var="parseDateDebut" type="both"></fmt:parseDate>
 		<fmt:parseDate value="${promo.dateFin }" pattern="yyyy-MM-dd"
@@ -97,6 +98,8 @@
 			</div>
 		</c:if>
 
+
+
 		<div class="div-etoiles">
 			<h3 class="titre-note">Note des utilisateurs</h3>
 			<p class="note">
@@ -134,7 +137,14 @@
 	</div>
 
 
-
+	<c:if test="${msgEnvoiMail != null }">
+		<div class="${classMsgEnvoiMail } message-vacances" role="alert" 
+		style="height: 70px; color: #2AA959; margin-top: 30px; background-color: #A3E0BA; font-weight: bold;">
+			<h2>
+				<c:out value="${msgEnvoiMail}"></c:out>
+			</h2>
+		</div>
+	</c:if>
 
 
 
@@ -190,17 +200,17 @@
 								<c:out value="${h.amOpen } - ${h.amClose } ----- "></c:out>
 								<c:out value="${h.pmOpen } - ${h.pmClose }"></c:out>
 							</c:when>
-							
+
 							<c:when test="${h.amOpen == 'Fermé' && h.pmOpen != 'Fermé'}">
 								<c:out value="${h.amOpen } le matin--- "></c:out>
 								<c:out value="${h.pmOpen } - ${h.pmClose }"></c:out>
 							</c:when>
-							
+
 							<c:when test="${h.amOpen != 'Fermé' && h.pmOpen == 'Fermé'}">
 								<c:out value="${h.amOpen } - ${h.amClose} ----- "></c:out>
 								<c:out value="${h.pmOpen } l'après-midi"></c:out>
 							</c:when>
-							
+
 							<c:otherwise>
 								<c:out value="Fermé"></c:out>
 							</c:otherwise>

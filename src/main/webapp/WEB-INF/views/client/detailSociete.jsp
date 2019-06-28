@@ -4,6 +4,13 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+
+<link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+
+
 <link rel="stylesheet" href="resources/css/style_fenetre_modal.css"
 	type="text/css" />
 
@@ -223,6 +230,34 @@
 					value="${societe.email }"></c:out></a> <br /> Tel :
 			<c:out value="${societe.tel }"></c:out>
 		</div>
+
+		<form method="POST" action="client/societe/inscrire-newsletter">
+			<section id="second" class="section">
+
+				<input type="hidden" name="id" value="${societe.id }" />
+				<div class="container">
+					<c:choose>
+						<c:when test="${newsletter == null }">
+							<input type="checkbox" name="newsletter" id="checkbox-1">
+								
+							<label for="checkbox-1"><span class="checkbox">Je
+									souhaite recevoir des informations, nouveautés, promotions sur
+									cette société </span></label>
+						</c:when>
+						<c:otherwise>
+							<input type="checkbox" name="nonNewsletter" id="checkbox-1">
+							<label for="checkbox-1"><span class="checkbox">Je
+									ne souhaite plus recevoir des informations, nouveautés,
+									promotions sur cette société </span></label>
+						</c:otherwise>
+					</c:choose>
+				</div>
+
+				<div>
+					<input type="submit" class="btn btn-primary" value="Valider" />
+				</div>
+			</section>
+		</form>
 	</div>
 
 </div>
@@ -276,6 +311,7 @@ function showModal() {
 	$('.popup .close ').click(function(e) {
 		// On désactive le comportement du lien
 		e.preventDefault();
+		$("#contenu").removeClass("fixer-container");
 		// On cache la fenetre modale
 		hideModal();
 	});

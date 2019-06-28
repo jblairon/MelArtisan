@@ -57,15 +57,5 @@ public class PromotionDao {
 		hibernateTemplate.delete(findById(id));
 	}
 
-	@SuppressWarnings("unchecked")
-	@Transactional(readOnly = true)
-	public Promotion findByEmail(String email) {
-		List<Promotion> promotions = (List<Promotion>) hibernateTemplate
-				.find("FROM Promotion u WHERE u.email= ?", email);
-		if (promotions != null && promotions.size() > 0) {
-			return promotions.get(0);
-		}
 
-		return null;
-	}
 }

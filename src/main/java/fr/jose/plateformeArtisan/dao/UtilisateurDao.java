@@ -36,6 +36,7 @@ public class UtilisateurDao {
 	public Utilisateur findById(long id) {
 		Utilisateur utilisateur = hibernateTemplate.get(Utilisateur.class, id);
 		System.out.println("utilisateur societes = " + utilisateur.getSocietes().size());
+
 		return utilisateur;
 	}
 	
@@ -71,6 +72,19 @@ public class UtilisateurDao {
 		
 		return null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public Utilisateur findEmailsById(List ids){
+//		List<Utilisateur> utilisateurs = ( hibernateTemplate.find("FROM Utilisateur u WHERE u.id= ?", id);
+//		if(utilisateurs!=null && utilisateurs.size()>0) {
+//			return utilisateurs.get(0);
+//		}
+		
+		return null;
+	}
+	
+	
 	
 	
 	

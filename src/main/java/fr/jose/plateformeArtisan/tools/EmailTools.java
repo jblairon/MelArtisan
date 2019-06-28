@@ -110,4 +110,46 @@ public class EmailTools {
 		
 		return messageErreur;
 	}
+	
+
+	public static String sendEmailToClient(String from, String subject, String msg, String emailTo) {
+//		String userName = "culture.eventsdawan@gmail.com";
+//		String password = "dawan2018";
+		
+		String userName = "culture.eventsdawan@gmail.com";
+		String password = "dawan2018";
+		
+		String messageErreur = null;
+		
+		Email email = new SimpleEmail();
+		email.setHostName("smtp.gmail.com");
+		email.setAuthentication(userName, password);
+		email.setSmtpPort(465);
+		email.setSSL(true);
+		
+		try {
+			email.setFrom(from);
+		} catch (EmailException e) {
+			e.printStackTrace();
+		}
+		email.setSubject(subject);
+		try {
+			email.setMsg(msg);
+		} catch (EmailException e) {
+			e.printStackTrace();
+		}
+		try {
+			email.addTo(emailTo);
+		} catch (EmailException e) {
+			e.printStackTrace();
+		}
+		try {
+			email.send();
+		} catch (EmailException e) {
+			messageErreur = "Une erreur s'est produite, veuillez r�essayer";
+			e.printStackTrace();
+		}
+		
+		return messageErreur;
+	}
 }

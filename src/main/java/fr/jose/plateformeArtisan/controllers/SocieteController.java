@@ -1,6 +1,9 @@
 package fr.jose.plateformeArtisan.controllers;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,18 +29,23 @@ import fr.jose.plateformeArtisan.beans.Adresse;
 import fr.jose.plateformeArtisan.beans.Categorie;
 import fr.jose.plateformeArtisan.beans.Contact;
 import fr.jose.plateformeArtisan.beans.Image;
+import fr.jose.plateformeArtisan.beans.Jour;
 import fr.jose.plateformeArtisan.beans.Metier;
+import fr.jose.plateformeArtisan.beans.Newsletter;
 import fr.jose.plateformeArtisan.beans.Note;
 import fr.jose.plateformeArtisan.beans.Prestation;
 import fr.jose.plateformeArtisan.beans.Societe;
+import fr.jose.plateformeArtisan.beans.Utilisateur;
 import fr.jose.plateformeArtisan.dao.AdresseDao;
 import fr.jose.plateformeArtisan.dao.CategorieDao;
 import fr.jose.plateformeArtisan.dao.ContactDao;
 import fr.jose.plateformeArtisan.dao.ImageDao;
 import fr.jose.plateformeArtisan.dao.MetierDao;
+import fr.jose.plateformeArtisan.dao.NewsletterDao;
 import fr.jose.plateformeArtisan.dao.NoteDao;
 import fr.jose.plateformeArtisan.dao.PrestationDao;
 import fr.jose.plateformeArtisan.dao.SocieteDao;
+import fr.jose.plateformeArtisan.dao.UtilisateurDao;
 import fr.jose.plateformeArtisan.formbeans.AjouterSocieteForm;
 import fr.jose.plateformeArtisan.formbeans.ChoixCategorieForm;
 import fr.jose.plateformeArtisan.formbeans.ChoixMetiersForm;
@@ -51,6 +59,9 @@ public class SocieteController {
 	@Autowired
 	private CategorieDao categorieDao;
 
+	@Autowired
+	private UtilisateurDao utilisateurDao;
+
 	@Autowired(required = true)
 	private SocieteDao societeDao;
 
@@ -59,6 +70,9 @@ public class SocieteController {
 
 	@Autowired(required = true)
 	private AdresseDao adresseDao;
+
+	@Autowired(required = true)
+	private NewsletterDao newsletterDao;
 
 	@Autowired(required = true)
 	private MetierDao metierDao;
@@ -736,7 +750,9 @@ public class SocieteController {
 	public ModelAndView afficherDetailSociete(HttpServletRequest request,
 			@RequestParam(name = "id", required = true) long id,
 			@RequestParam(name = "ajouteAuxFavoris", required = false) String ajouteAuxFavoris,
-			@RequestParam(name = "msgNote", required = false) String msgNote) throws Exception {
+			@RequestParam(name = "msgEnvoiMail", required = false) String msgEnvoiMail,
+			@RequestParam(name = "msgNote", required = false) String msgNote, Model model1) throws Exception {
+
 		Map<String, Object> model = new HashMap<>();
 
 		List<Categorie> categories;
@@ -755,16 +771,28 @@ public class SocieteController {
 
 		}
 		model.put("categories", categories);
+		String classMsgEnvoiMail = "";
+
+		if (msgEnvoiMail != null && msgEnvoiMail != "") {
+			if (msgEnvoiMail.contains("Erreur")) {
+				classMsgEnvoiMail = "alert alert-block alert-danger";
+			} else {
+				classMsgEnvoiMail = "alert alert-block alert-info";
+			}
+		}
+
+		model.put("msgEnvoiMail", msgEnvoiMail);
+		model.put("classMsgEnvoiMail", classMsgEnvoiMail);
 
 		String messageOpenClose = null;
 		String divClass = null;
 		String msgFavori = null;
 		String messageVacances = null;
 		String divClassVacances = null;
+		Societe societe = null;
 
 		try {
-			Societe societe = societeDao.findById(id);
-			System.out.println("image promo = " + societe.getPromotions().get(0).getImage());
+			societe = societeDao.findById(id);
 
 			// pour l'ajout dans les favoris
 			if (ajouteAuxFavoris != null) {
@@ -782,17 +810,39 @@ public class SocieteController {
 			}
 
 			if (societe.getHoraires().size() > 0) {
+				LocalDate today = LocalDate.now();
+				DayOfWeek cejour = today.getDayOfWeek();
+				Jour[] j = Jour.values();
+
+				System.out.println("jour = " + cejour.getValue() + " jour de la semaine = " + j[cejour.getValue() - 1]);
 
 				for (int i = 0; i < societe.getHoraires().size(); i++) {
+					if (societe.getHoraires().get(i).getJour().equals(j[cejour.getValue() - 1])) {
 
-					if (societe.getHoraires().get(i).getAmOpen().equals("Fermé")
-							&& societe.getHoraires().get(i).getPmOpen().equals("Fermé")) {
-						messageOpenClose = "Aujourd'hui fermé toute la journée";
-						divClass = "alert alert-block alert-danger div-class";
-						societe.setAmCloseToDay(true);
-						societe.setPmCloseToDay(true);
-						System.out.println("equals fermé");
+						if (societe.getHoraires().get(i).getAmOpen().equals("Fermé")
+								&& societe.getHoraires().get(i).getPmOpen().equals("Fermé")) {
+							messageOpenClose = "Aujourd'hui fermé toute la journée";
+							divClass = "alert alert-block alert-danger div-class";
+							societe.setAmCloseToDay(true);
+							societe.setPmCloseToDay(true);
+							System.out.println("Fermé toute la journée");
+						} else if (societe.getHoraires().get(i).getAmOpen().equals("Fermé")
+								&& (!societe.getHoraires().get(i).getPmOpen().equals("Fermé"))) {
+							messageOpenClose = "Aujourd'hui ouvert l'après-midi";
+							divClass = "alert alert-block alert-warning div-class";
+							societe.setAmCloseToDay(true);
+							societe.setPmCloseToDay(false);
+							System.out.println("ouvert l'après-midi");
+						} else if (!societe.getHoraires().get(i).getAmOpen().equals("Fermé")
+								&& societe.getHoraires().get(i).getPmOpen().equals("Fermé")) {
+							messageOpenClose = "Aujourd'hui fermé cet après-midi";
+							divClass = "alert alert-block alert-danger div-class";
+							societe.setAmCloseToDay(false);
+							societe.setPmCloseToDay(true);
+							System.out.println("Fermé l'après-midi");
+						}
 					}
+
 				}
 			}
 
@@ -837,6 +887,29 @@ public class SocieteController {
 		if (request.getSession().getAttribute("user_id") != null
 				&& (boolean) request.getSession().getAttribute("user_client")) {
 			System.out.println("je suis client");
+
+			// vérification si l'utilisateur a accepté la newletter
+			Utilisateur u = new Utilisateur();
+			try {
+				u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				model.put("msg", "Erreur de connexion à la base de données");
+				if (request.getSession().getAttribute("user_id") == null) {
+					return new ModelAndView("pageErreurs", model);
+				} else {
+					return new ModelAndView("pageErreurs", model);
+				}
+
+			}
+
+			Newsletter n = new Newsletter();
+			n = newsletterDao.findBySociete_id_utilisateur_id(societe.getId(), u.getId());
+			if (n != null) {
+				System.out.println("non null");
+				request.setAttribute("newsletter", n.getId());
+			}
+
 			return new ModelAndView("client/detailSociete", model);
 		}
 
@@ -847,6 +920,49 @@ public class SocieteController {
 		}
 
 		return new ModelAndView("detailSociete", model);
+	}
+
+	// Pour l'inscription à la newsletter d'une société
+	@RequestMapping(value = { "/client/societe/inscrire-newsletter", "/admin/societe/inscrire-newletter",
+			"/artisan/ma-societe" }, method = RequestMethod.POST)
+	public String inscrireNewletter(HttpServletRequest request) {
+
+		String newsletter = request.getParameter("newsletter");
+		Societe societe = societeDao.findById(Long.parseLong(request.getParameter("id")));
+		Utilisateur u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+
+		if (newsletter != null) {
+			Newsletter n = new Newsletter();
+			n.setSociete_id(societe.getId());
+			n.setUtilisateur_id(u.getId());
+			newsletterDao.save(n);
+		} else if (request.getParameter("nonNewsletter") != null) {
+			Newsletter n = newsletterDao.findBySociete_id_utilisateur_id(societe.getId(), u.getId());
+			newsletterDao.delete(n.getId());
+		}
+
+		return "redirect:/client/societe/societe-detail?id=" + societe.getId();
+
+	}
+
+	// Pour l'inscription à la newsletter de MelArtisan
+	@RequestMapping(value = { "/client/societe/inscrire-newsletter-melArtisan",
+			"/admin/societe/inscrire-newletter-melArtisan", }, method = RequestMethod.POST)
+	public String inscrireNewletterMelArtisan(HttpServletRequest request) {
+
+		String newsletter = request.getParameter("newsletter");
+		Utilisateur u = utilisateurDao.findById((long) request.getSession().getAttribute("user_id"));
+
+		if (newsletter != null) {
+			u.setMelArtisan_newsletter(true);
+			utilisateurDao.update(u);
+		} else if (request.getParameter("nonNewsletter") != null) {
+			u.setMelArtisan_newsletter(false);
+			utilisateurDao.update(u);
+		}
+
+		return "redirect:/client/accueil?user_id=" + u.getId();
+
 	}
 
 	@RequestMapping(value = { "/client/societe/societe-voter" }, method = RequestMethod.GET)
